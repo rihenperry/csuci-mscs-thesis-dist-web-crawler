@@ -1,0 +1,78 @@
+\documentclass[12pt]{article}
+%\topmargin=-0.5in
+%\textheight=9in
+%\evensidemargin=0in
+%\oddsidemargin=0in
+%\setlength{\textwidth}{6.5in}
+\usepackage{graphicx}
+\newcommand{\HRule}{\rule{\linewidth}{0.2mm}}
+\input{project-info}
+\input{preamble}
+
+\title{\thesistitle} 
+\author{\studentname}
+\date{\today}
+
+\begin{document}
+
+\input{pages/frontpage}
+\baselineskip = \baselineskip
+\newpage
+
+\input{pages/copyrightpage}
+\newpage
+
+\input{pages/approvalpage}
+\newpage
+
+\includepdf{media/distribution-license.pdf}
+\newpage
+
+
+\maketitle
+
+\begin{abstract}
+	Abstract goes here
+\end{abstract}
+
+\newpage
+\pagenumbering{roman}
+
+\tableofcontents
+
+\newpage
+
+\listoffigures
+
+\newpage
+\pagenumbering{arabic}
+
+\section{Introduction}
+\label{sect-intro}
+An example citation: \cite{graves-1995}.\\
+An example reference: \autoref{fig:ci-logo} (Notice references and citations are clickable!)
+
+% When including grapics, make sure the directory is relative to root .tex document, not the current .tex file
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.7\linewidth]{media/ci-logo}
+	\caption{This is an example graphic}
+	\label{fig:ci-logo}
+\end{figure}
+
+\section{Background}
+\label{sect-background}
+Your work goes here
+
+\section{Conclusion and future work}
+\label{sect-conclusion}
+Your work goes here
+
+\cleardoublepage
+\phantomsection
+\bibliographystyle{plain}
+\bibliography{references}
+\addcontentsline{toc}{section}{References}
+
+\end{document}
+
