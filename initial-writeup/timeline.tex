@@ -1,3 +1,29 @@
 % Chapter Timeline
 \chapter{Timeline}
 I intend to graduate in fall 2019 i.e next semester. Below is my timeline to execute the thesis:
+\begin{enumerate}
+\item First get the single node crawler running on local development environment. To do this,
+  \begin{enumerate}
+  \item Build docker images of data stores involved. I will be using PostgreSQL for
+    fingerprintDB, Robots Exclusion Policy, and DUE url set. Each data store will maintain local.yml
+    \& production.yml that will point to local and aws version of databases, respectively.
+  \item Build docker image of RabbitMQ with default configuration. Followed by getting acquainted with
+    enough terminology and tutorials to get started. This image will be shared with all phases of a
+    crawler.
+  \item Initialize git repository for each phase of the crawler. Build docker image for each phase,
+    specify RabbitMQ as its dependency. Bind each phase to a queue through a message broker depending
+    on its role as a consumer/producer.
+  \item Boot the phases in sequence using docker compose. Test the message passing between services.
+    This stage ensures the tooling required is up \& running as expected.
+  \item Code functionality for consumer \& producer scripts bound to a queue of fetcher module. 
+  \item Code functionality for consumer \& producer scripts of Parser, Content Seen modules as separate
+    services. Test message passing among fetcher, parser , \& content seen.
+  \item Code functionality for consumer \& producer scripts bound to a queue for URL filter module. Test
+    message passing between this filter and previous modules implemented.
+  \item Implement consumer \& producer scripts for DUE. Test message passing between modules implemented
+    so far.
+  \item Code functionality for URL Frontier. Verify messages published \& consumed. Test message passing
+    between modules implemented so far.
+  \end{enumerate}
+  
+\end{enumerate}
