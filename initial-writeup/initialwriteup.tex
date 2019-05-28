@@ -1,4 +1,4 @@
-\documentclass[a4paper, 12pt] {report}
+\documentclass[a4paper, 12pt]{report}
 
 \setcounter{tocdepth}{3}
 \setcounter{secnumdepth}{3}
@@ -36,17 +36,13 @@
 \include{futureworks/fw-1}
 
 \include{timeline}
-%\include{segment_intensity_similarity}
-%\include{segment_intensity_discontinuity}
-%\include{results}
-%\include{summary}
+
+\include{resources}
 \newpage
 
-\renewcommand{\bibname}{References}
+\nocite{*}
+\bibliographystyle{unsrt}
 \bibliography{references}\index{References}
-\bibliographystyle{plain}
-% \nocite{*}
-
 \end{document}
 %%% Local Variables:
 %%% mode: latex
