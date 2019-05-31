@@ -1,8 +1,35 @@
 \chapter{Background}
-some text here
+This chapter primarily attempts to familiarize the reader with enough groundwork related to web crawler. It
+also elaborates on the miscellaneous resources that are integrated to support the objective of this thesis.
+It begins by explaining the basic steps taken by a crawler, followed by describing key features that
+underpin its system design. Properties of a crawler are discussed in the following section. A
+chronological walk through of highly established crawlers and key differences are noted later in the
+section. A section is dedicated to explaining Message Queues. The remainder of this chapter covers
+different AWS services and docker used to interweave an environment for executing a complex program.
+
 
 \section{Basic Crawling Algorithm}\index{Basic Crawling Algorithm}
-algo steps here
+The basic operation of any HTTP based crawler goes like this:
+\\
+\\
+\begin{algorithm}
+%\caption{My algorithm}\label{euclid}
+\begin{algorithmic}[1]
+  \State $\text{Let I} \gets \text{\{1,2,3,4,5\}} \text{ such that seed set S = \{} U_i \text{| i } \in \text{I\}}$
+  \State $U_f \gets \text{S; where } U_f \text{ is a Frontier queue}$
+  \Procedure{Spider}{$U_f$}
+  \While {$U_f \neq \emptyset$}
+    \State $u \gets \text{Pop}(U_f)$ 
+    \State $p \gets \text{Fetch}(u)$
+    \State $T \gets \exists p\text{ [\{Extract}(p, t) \text{ | } t \text{ is a text \}]}$
+    \State $L \gets \exists p\text{ [\{Extract}(p, l) \text{ | } l \text{ is a link \}]}$
+    \State $U_f \gets U_f \cup L$
+    \State $\exists u\text{ [\{Delete}(U_f, u) \text{ | } u \text{ is a already fetched URL\}]}$
+  \EndWhile
+\EndProcedure
+\State \textbf{end}
+\end{algorithmic}
+\end{algorithm}
 
 \section{Features of Robust Crawler}\index{Features of Robust Crawler}
 they are divided into primary and secondary \cite{einstein}

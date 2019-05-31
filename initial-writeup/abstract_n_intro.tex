@@ -11,12 +11,17 @@ source code.
 \\
 This thesis implements a small-scale, special purpose crawler for collecting data on job postings from
 numerous job portals active on the web. This will help job seekers monitor openings of interest and
-act accordingly. The crawler architecture builds on a open blueprint design of \textit{Mercator}\cite{mercator} which describes the design in enough detail but leaves out implementation specifics to developers. In
-one case, the paper doesn't discuss communication between its components. This thesis makes use of message
-broker to facilitate collaboration between components thus providing asynchronous, event-driven style of
-communication. It also highlights its strengths \& weakness. A more crucial issue is without having a target to crawl, the problem of crawling becomes endless, infinite crawling even for specialized crawler such as this. This thesis discusses the crawl ordering strategy to shape its crawling only to specific content. Moreover, certain web portions in each of the input seed set update over time thus wanting the crawler to continuously seek fresh content. This presents an interesting challenge to recrawl certain pages but at the same time ensuring not throttling a particular host with requests with potential consequences of getting blacklisted by the webmaster. To achieve this, the thesis derives its own prioritzer policy \& the biased selector policy within its URL Frontier module. Furthermore, this thesis shows the shortcomings of linear hashing used for partitioning hosts to distribute the crawl and instead employs consistent hashing\cite{consisthash} algorithm and discuss its merits over it. Given this complex program at hand, it becomes
-obvious to separate the concerns by developing and testing each component in isolated pieces. This thesis leverages docker containers to build the project in stages. It allows to split the development and production environment by building images for the target platform to run the component. For running the crawler activity, this thesis
-makes the most of AWS 12-month free tier access by combining together suite of services and sketches an infrastructure to setup, deploy and demonstrate the program. Lastly, this thesis explains the philosophy, principles behind microservices\cite{microservices} by relating it to work done in this thesis.
+act accordingly. The crawler architecture builds on a open blueprint design of \textit{Mercator}\cite{mercator} which describes the design in enough detail but leaves out implementation specifics to developers.
+\\
+\\
+\begin{itemize}
+  \item \textbf{Use of Message Queue:} In one case, the paper doesn't discuss communication between its components. This thesis makes use of message broker to facilitate collaboration between components thus providing asynchronous, event-driven style of communication. It also highlights its strengths \& weakness.
+   \item \textbf{Crawl Ordering Problem:} A more crucial issue is without having a target to crawl, the problem of crawling becomes endless, infinite crawling even for specialized crawler such as this. This thesis discusses the crawl ordering strategy to shape its crawling only to specific content.
+   \item \textbf{Distributing the crawl:} Furthermore, this thesis shows the shortcomings of linear hashing used for partitioning hosts to distribute the crawl and instead employs consistent hashing\cite{consisthash} algorithm and discuss its merits over it.
+    \item \textbf{Development strategy:}  Given this complex program at hand, it becomes obvious to separate the concerns by developing and testing each component in isolated pieces. This thesis leverages docker containers to build the project in stages. It allows to split the development and production environment by building images for the target platform to run the component.
+    \item \textbf{AWS Services:} For running the crawler activity, this thesis makes the most of AWS 12-month free tier access by combining together suite of services and sketches an infrastructure to setup, deploy and demonstrate the program.
+    \item \textbf{Microservices:} Lastly, this thesis explains the philosophy, principles behind microservices \cite{microservices} by relating it to work done in this thesis.
+\end{itemize}
 
 
 \section{Motivation}\index{Motivation}
