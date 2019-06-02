@@ -31,7 +31,32 @@ The basic operation of any HTTP based crawler goes like this:
 \end{algorithmic}
 \end{algorithm}
 
-\section{Features of Robust Crawler}\index{Features of Robust Crawler}
-they are divided into primary and secondary \cite{einstein}
+\pagebreak
+
+\section{Features of a Crawler}
+The web is not a centrally hosted data warehouse but instead is comprised of billions of independent
+web hosts, operating within its limits. Taking this into consideration, a web crawler exhibits most of the
+following traits:
+
+\begin{itemize}
+\item \textbf{Being polite to web hosts:} A crawler shouldn't induce too much burden on target host
+  at the time when they crawl. By not regulating this behavior, it is blocking the web site from pursuing
+  its purpose or business and eventually there is a higher possibility of have ramifications on the
+  operator running the crawler.
+\item \textbf{Resilent to spider traps:} Some hosts mislead crawlers into fetching page after page that
+  never reach an end. Thus, a crawler should be robust to such fallacies.
+\item \textbf{Distributing load:} A crawler can make itself capable by distributing the load across
+  multiple machines. Distributing the load across multiple machines is also a \textit{shared nothing
+    architecture}. It can make the crawler download web pages based on geographical proximity reducing
+  request-response latency.
+\item \textbf{Scaling:} Scaling and Distributed may sound similar but subtle difference is a scalable
+  crawler's sole purpose is to cop up with load as it comes, in this case, pacing the crawl rate as well
+  as enhancing the crawl rate. With scalability in mind, the architecture needs to be rethought on every
+  order of magnitude of load increase.
+\item \textbf{Page quality:} A crawler should seek broad coverage by being an explorer but at the same
+  time it should be biased towards first selecting websites it is intended to crawl.
+\item \textbf{Extensible:} Like any complex program, a crawler system design should be flexible and
+  extensible on top of its core modules.
+\end{itemize}
 
 \pagebreak
