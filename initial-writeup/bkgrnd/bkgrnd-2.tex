@@ -10,34 +10,49 @@ be said to be \textit{random walker} with no purpose. Most of the commercial or 
 have some sort of crawling order policy built into their system. It is a must for small-scale, special
 purpose crawler to order the extracted URLs because the act of acquiring content is restricted by various
 factors.
-\\
-\\
-Figure \ref{fig:crawlorder} shows how different types of crawls tradeoff page importance.
-\\
 \begin{figure}[h!]
   \centering
   \includegraphics[width=15cm,height=12cm,keepaspectratio]{../media/crawler/crawl-ordering.png}
   \caption{Crawl ordering based on Coverage vs. Freshness}
   \label{fig:crawlorder}
 \end{figure}
-
-\begin{description}
-\textbf{Coverage:} Focus is on fetching pages that crawler deems required. \leavemode \\
+\leavemode \\
+\textbf{Coverage:} Focus is on fetching pages that crawler deems required. 
 \\
 \textbf{Freshness:} Here the focus is on revisting, redownloading already visited pages. Since web 2.0,
-pages are capable of dynamically changing content and upcoming web 3.0 will have javascript rendered data.
+pages are capable of dynamically changing content and popularity of Single Page Applications(SPA) has
+enabled rendering data through view logic controlled by javascript.
 \\
 \\
 The question of balancing content coverage and freshness in a crawler is solely a decision of entity behind
-it.
-\end{description}
+it. As shown in the figure \ref{fig:crawlorder}, \textit{Comprehensive Crawling} focuses on maximizing coverage by reaching out to content of all types.
+A particular page $p$ is weighted important by counting external links outside current site's perimeter. Crawl order policies like Breath-first Search, PageRank, and other variations are applied. Such activity
+is carried out by Commericial Search Engines.
 \\
- 
+\\
+On the other hand, \textit{Scoped Crawling} narrows its
+crawling activity to certain portion of the web i.e only crawl a specific category (e.g everything about Stock Market). The crawling order is determined based on a degree to which a page $p$ falls under its umbrella.
+In constrast to Comprehensive, Scoped crawler is suitable for data-mining task by performing
+data collection on topic of interest.\textit{Topical Crawling} is a form of Scoped Crawling in which page relevance is determined by - given a  page $p$ links to another page $p`$ and is in-scope(within bounds) either directly or through a series of subsequent links. There are 3 techniques to order URLs to crawl.
 
-\subsection{Batch Crawling}
+\begin{enumerate}
+\item Fish Search (Binary classificaiton). Here, the relevance is measured by treating links within visited
+  page either relevant/ire-relevant upto a certain height.
+\item The relevance is estimated by doing textual analysis on text surrounding a link in a visited page $p$
+  that points to yet-to-be visited page $q$.
+\item Train and query a Machine Learning classifier to get the score of set of topics of interest to crawl.
+\end{enumerate}
 
-\subsection{Incremental Crawling}
+This crawler has to balance its greediness level by considering page relevance. It is possible that a
+already relevant page $p$ may not always yield a new relevant page but it might would after going through
+several links of irrelevant pages. If the crawler is designed to be too greedy then it will have zero
+coverage which in turn means it won't discover new pages in its journey. A decay factor can be used to
+allow irrelevant fetches with an ultimate intention of finding relevant page of interest.
+\\
+\\
+Finally, freshness is the attribute that makes the design of crawler being either continuous or non-continuous.A \textit{batch crawling} design requires the restarted of a crawler at periodic interval to download
+revised content of previously crawled pages. A \textit{continuous} or \textit{incremental crawling} design
+would be technically a program that never terminates to revisit previously crawled pages.
 
 
 \addtocontents{toc}{\protect\setcounter{tocdepth}{3}}
-
