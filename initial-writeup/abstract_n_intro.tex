@@ -15,7 +15,7 @@ act accordingly. This thesis does not deal with data mining but instead focuses 
 \\
 \\
 \begin{itemize}
-  \item \textbf{Use of Message Queue:} In one case, the paper doesn't discuss communication between its components. This thesis makes use of message broker to facilitate collaboration between components thus providing asynchronous, event-driven style of communication. It also highlights its strengths \& weakness.
+  \item \textbf{Use of Message Queue:} In one case, the paper doesn't provides information on how the subsystems that make up a crawler are connected together. This thesis makes use of message broker to facilitate collaboration between components thus providing asynchronous, event-driven style of communication. It also highlights its strengths \& weakness.
    \item \textbf{Crawl Ordering Problem:} A more crucial issue is without having a target to crawl, the problem of crawling becomes endless, infinite crawling even for specialized crawler such as this. This thesis discusses the crawl ordering strategy to shape its crawling only to specific content.
    \item \textbf{Distributing the crawl:} Furthermore, this thesis shows the shortcomings of linear hashing used for partitioning hosts to distribute the crawl and instead employs consistent hashing\cite{consisthash} algorithm and discuss its merits over it.
     \item \textbf{Development strategy:}  Given this complex program at hand, it becomes obvious to separate the concerns by developing and testing each component in isolated pieces. This thesis leverages docker containers to build the project in stages. It allows to split the development and production environment by building images for the target platform to run the component.

@@ -3,34 +3,30 @@
 I intend to graduate in fall 2019 i.e next semester. Below is my timeline to execute the thesis starting
 first week of June, 2019:
 \begin{itemize}
-\item[(Week 1 - 7)] First get the single node crawler running on local development environment. To do this,
+\item[(Week 1 - 7)] First get the single node crawler running on local development environment. To achieve this,
   \begin{itemize}
   \item[(Week 1)] Build docker images of data stores involved. I will be using PostgreSQL for
     fingerprintDB, Robots Exclusion Policy, and DUE url set. The job data will be stored in MongoDB(local)
-    and DynamoDB(AWS). Each data store will maintain local.yml
+    and DynamoDB-MongoDB compatible(AWS). Each data store will maintain local.yml
     \& production.yml that will point to local and aws version of databases, respectively.
-  \item[(Week 1)] Build docker image of RabbitMQ with default configuration. Followed by getting acquainted with enough terminology and tutorials to get started. This image will be shared with all phases of a
+  \item[(Week 1)] Build docker image of RabbitMQ with default configuration. Followed by getting acquainted with enough terminology and tutorials to get started. This image will be shared with all subsystems of a
     crawler.
-  \item [(Week 2)]Initialize git repository for each phase of the crawler. Build docker image for each phase,
-    specify RabbitMQ as its dependency. Bind each phase to a queue through a message broker depending
+  \item [(Week 2)]Initialize git repository for each subsystem of the crawler. Build docker image for each subsystem,
+    specify RabbitMQ as its dependency. Bind each subsystem to a queue through a message broker depending
     on its role as a consumer/producer.
-  \item[(Week 2)] Boot the phases in sequence using docker compose. Test the message passing between services.
-    This stage ensures the tooling required is up \& running as expected.
-  \item[(Week 3)] Code functionality for consumer \& producer scripts bound to a queue of fetcher module. 
-  \item[(Week 4)] Code functionality for consumer \& producer scripts of Parser, Content Seen modules as separate
-    services. Test message passing among fetcher, parser , \& content seen.
-  \item[(Week 5)] Code functionality for consumer \& producer scripts bound to a queue for URL filter module. Test
-    message passing between this filter and previous modules implemented.
-  \item[(Week 6)] Implement consumer \& producer scripts for DUE. Test message passing between modules implemented
-    so far.
-  \item[(Week 7)] Code functionality for URL Frontier. Verify messages published \& consumed. Test message passing between modules implemented so far.
+  \item[(Week 2)] Boot all the subsystems in sequence using docker compose. Test the message passing between services. This stage ensures the tooling required is up \& running as expected.
+  \item[(Week 3)] Code functionality for consumer \& producer scripts bound to a queue of fetcher \& DNS subsystem. 
+  \item[(Week 4)] Code functionality for consumer \& producer scripts of Parser, Content Seen subsystems, respectively as separate services. Test message passing among fetcher, parser , \& content seen.
+  \item[(Week 5)] Code functionality for consumer \& producer scripts bound to a queue for URL filter subsystem. Test message passing between this filter and previous subsystems implemented.
+  \item[(Week 6)] Implement consumer \& producer scripts for DUE. Test message passing between subsystems implemented so far.
+  \item[(Week 7)] Code functionality for URL Frontier subsystem. Verify messages published \& consumed. Test message passing between subsystems implemented so far.
   \end{itemize}
-\item[(Week 8)] At this stage, ensure the program is running as a single node on local machine.
-\item[(Week 8 \& 9)] Initialize a repo. for host splitting module. Implement consistent hashing algorithm.
-  This will parallelize crawling.
-\item[(Week 10)] Next, Setup AWS Infrastructure for whirlpool by following the diagram. Build and test
-    the docker images pointing to AWS data stores within the pvt subnets.
-\item[(Week 11)] Get crawler running on single node within a private subnet of AWS VPC.
+\item[(Week 8)] At this stage, ensure the crawler as a whole is running as a single node on local machine.
+\item[(Week 8 \& 9)] Next, Setup AWS Infrastructure for whirlpool by following the diagram. Build and test
+    the docker images in isolation pointing to AWS data stores within the pvt subnets.
+\item[(Week 10)] Get crawler running on single node within a private subnet of AWS VPC.
+\item[(Week 10 \& 11)] Initialize a repo. for host splitting module. Implement consistent hashing algorithm. This will parallelize crawling.
+
 \item[(Week 11 \& 12)] Make 2nd identical clone of the crawler within a private subnet of AWS VPC. Observe \& verify traffic is split equally between the nodes.
 \item[(week 13)] Demonstrate Whirlpool working to Dr. Soltys. Make any changes requested in the code or the report.
 \end{itemize}
