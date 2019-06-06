@@ -20,18 +20,19 @@ crawler subnet will flow to NAT Instance and then to the IGW. The NAT will trans
 and destination IPs of private instances.
 \\
 \\
-The data store private subnet will contain RDS instance(PostgreSQL as part of the implementation). The
-extracted data is hosted in DynamoDB which is a NoSQL variant. One good thing about DynamoDB is its
-MongoDB compatible - the query language interface is blurred according to the recent announcement by AWS at
-the time of this writing.
+The data store private subnet contains RDS instance(PostgreSQL as part of the implementation). The
+extracted data is persisted in MongoDB which is a NoSQL variant. AWS does not have managed instance of
+MongoDB and requires the interested party to operate, maintain on an EC2 Instance. Finally, to improve
+lookup time efficiency of few subsystems within the whirlpool, AWS ElasticCache is leveraged. ElasticCache
+provides a choice between Memcached \& Redis Instance.
 
 % note - here expand on EC2, RDS, cache, NoSQL, NAT computing specifications
 \section{AWS resources Cost Estimation}
 The below table provides approximate monthly billing information of AWS resources used by this project to build, test, and run experiments. The calculation was performed using AWS monthly calculator. At the time of
 this writing, the author is enrolled is 12-month AWS Free tier access which discounts most of the services
 the crawler system leverages.
-
-
+\\
+\\
 \begin{figure}[h!]
   \centering
   \includegraphics[width=20cm,height=12cm,keepaspectratio]{../media/crawler/aws-cost-estimate.png}
@@ -39,9 +40,15 @@ the crawler system leverages.
   \label{fig:awscost}
 \end{figure}
 
-Under Amazon EC2 services, each crawler node sits on a EC2 instance which is t2.micro - 1GiB RAM coupled
-with Elastic Block Storage(EBS) volume of 5 GiB has approx. 5o\% utilization. Therefore a A 3-node crawler, will have 3x t2.micro and 3x 5 GiB EBS volumes.
+\noindent
+Under Amazon EC2 services, each crawler node sits on a EC2 instance which is t2.micro - 1 GiB RAM coupled
+with Elastic Block Storage(EBS) volume of 5 GiB has approx. 5o\% utilization. The EBS volume is general purpose SSD(gp2) with 100 IOPS and 128 MiB/s throughput. Therefore a A 3-node crawler, will have 3x t2.micro and 3x 5 GiB EBS volumes. The free tier usage is limited to 750 hours/month of linux, RHEL. Each crawler node will run a message broker - RabbitMQ to interconnect the crawler subsystems.
 \\
 \\
-
+Coming on to Amazon RDS Service, this project uses 1 instance of PostgreSQL to store fingerprints of a web page content at a given URL, robots.txt attributes of each site, and URLs already enqueued to be crawled.
+PostgreSQL runs on a db.t2.micro storage class with single AZ deployment with 50\% utilization.
+\\
+\\
+The choice for using Amazon DynamoDB comes with AWS's recent announcement of its compatibility with
+MongoDB applications and tools. Whirlpool accumulates extracted text in DynamoDB
 \pagebreak

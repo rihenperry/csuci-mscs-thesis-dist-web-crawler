@@ -6,9 +6,7 @@ first week of June, 2019:
 \item[(Week 1 - 7)] First get the single node crawler running on local development environment. To achieve this,
   \begin{itemize}
   \item[(Week 1)] Build docker images of data stores involved. I will be using PostgreSQL for
-    fingerprintDB, Robots Exclusion Policy, and DUE url set. The job data will be stored in MongoDB(local)
-    and DynamoDB-MongoDB compatible(AWS). Each data store will maintain local.yml
-    \& production.yml that will point to local and aws version of databases, respectively.
+    fingerprintDB, Robots Exclusion Policy, and DUE url set. The job data will be stored in MongoDB(development \& production). Each data store will maintain local.yml \& production.yml that will point to local and aws version of databases, respectively.
   \item[(Week 1)] Build docker image of RabbitMQ with default configuration. Followed by getting acquainted with enough terminology and tutorials to get started. This image will be shared with all subsystems of a
     crawler.
   \item [(Week 2)]Initialize git repository for each subsystem of the crawler. Build docker image for each subsystem,
