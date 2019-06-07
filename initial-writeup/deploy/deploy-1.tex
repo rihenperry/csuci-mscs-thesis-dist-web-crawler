@@ -1,22 +1,24 @@
 % Chapter Deployment
 \chapter{Deployment on AWS}
-This chapter discusses server farm assembly for running whirlpool on a on-demand resources offered by
+This chapter discusses server farm assembly for running whirlpool on a on-demand hardware resources offered by
 AWS. It uses altitude analogy to illustrate important additions in infrastructure at various levels in
-detail.
+detail. The last section explains hardware configuration of resources used and their pricing details.
 
 \section{Infrastructure from 10,000 feet}\label{infra10k}
+
 Given a working knowledge of AWS and a crawler which is replicated on to more than one machine, it 
 becomes naturally obvious to setup a subnet within a Virtual Private Cloud(VPC) and launch EC2 instances
 in it. The subnet within a VPC belongs to single Availability Zone(AZ). 
+
 \begin{figure}[h!]
   \centering
   \includegraphics[width=18cm,height=12cm,keepaspectratio]{../media/crawler/ten-thousand-feet-aws.png}
-  \caption{Whirlpool Infrastructure using VPC, AZ, and subnet sizing}
+  \caption{Whirlpool Infrastructure using VPC, AZ, and Subnet Sizing}
   \label{fig:infra10k}
 \end{figure}
 
 \noindent
-Next, the nature of crawling process is such that it will make outgoing connections to the web servers and never except incoming connections which means the subnet should allow outbound traffic and deny inbound traffic. According to the default behavior of AWS VPC, a private subnet is denied any inbound/outbound connections to the internet. To enable access to the internet within a subnet, a Internet Gateway(IGW) is attached to the VPC.
+Next, the data transfer in crawling process is such that it will make connection requests to the web sites and pull data into the amazon cloud, thus the inbound data transfer cost from the internet into amazon cloud is free. Security-wise, the crawler nodes should never except incoming connections from internet. These nodes are placed in private subnet 2. By default a private subnet within a AWS VPC is denied any inbound/outbound connections to the internet. As a best practice, subnet 2 is allowed only inbound connections. This is done by routing its internet traffic to NAT instance deployed in public subnet which further takes from Internet Gateway(IGW) attached to the VPC all the way into public internet.
 \\
 \\
 \noindent
@@ -24,7 +26,7 @@ Moreover, the subsystems of whirlpool leverage relational database to maintain a
 store extracted text which is then used by the presentation tier to render the data to the public. Also,
 later on, a cache server can be adopted to optimize lookup efficiency of various components. Given this
 requirement, its safer to form a second private subnet dedicated to placement of data stores and a third
-subnet which is public to host application server as shown in the figure \ref{fig:infra10k}. This way, the data store subnet would stay safer routing traffic only within the VPC.
+subnet which is public to host application server as shown in the figure \ref{fig:infra10k}. This way, the data store subnet would stay safer accepting network connections only within the VPC.
 \\
 \\
 \noindent
