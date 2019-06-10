@@ -1,7 +1,25 @@
 % Implementation chapter continued
 \section{Internals}\label{internals}
 \subsection{RabbitMQ as a Central Message Bus}\index{RabbitMQ as a Central Message Bus}
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=20cm,height=12cm,keepaspectratio]{../media/crawler/rmq-broker.png}
+  \caption{Message Distribution using RabbitMQ Direct Exchange}
+  \label{fig:rmq}
+\end{figure}
+\pagebreak
+
 \subsection{Shared Services with Docker}\index{Shared Services with Docker}
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=18cm,height=10cm,keepaspectratio]{../media/crawler/multi-container-deploy.png}
+  \caption{Single-node Whirlpool Subsystem Isolation using Docker}
+  \label{fig:multicontainer}
+\end{figure}
+
+
+\pagebreak
+
 \subsection{Parser \& its Crawl Ordering Problem}\index{Parser \& its Crawl Ordering Problem}
 \subsection{URL filtering algorithm}\index{URL Frontier}
 \subsection{URL Frontier}\index{URL Frontier}
