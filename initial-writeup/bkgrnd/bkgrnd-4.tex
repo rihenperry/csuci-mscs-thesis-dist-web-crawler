@@ -196,20 +196,35 @@ of the timestamp. Its the very server that is allowed to query next before it qu
 \\
 \\
 While this cycle continues, the back queue router ensures the server queues $B_n$ are non-empty.  It is busy with pulling a URL $u`$ from the head of front queue picked up by some randomize front queue function. Following this, it checks whether server queue $q$ exists for $u`$, if so, then it gets added to that queue. It goes again to pull another URL $w$, this time it sees that server queue $q$ is now empty and there insert $w$ in it and renames the $q$ to $q`$. During the same iteration, the process sinks a new vertex
-$V`(q`,t`)$ based on the meta-information of $w$ such as time $t`$.
+$V`(q`,t`)$ on to the min-heap based on the meta-information of $w$ such as time $t`$.
 
 
 
 \pagebreak
-some text here
+
 \subsection{Distributing Web Crawl}\index{Distributing Web Crawl}
+A crawler program as a whole can be distributed for various reasons. A distributed crawler can crank up crawling rate. This is achieved by making a identical clone of single node crawler and replicating it onto another machine. Another advantage of distributing the crawl is that a subset of websites are crawled by a machine which is geographically closer to its data center/region. The immediate question is how does mercator extend its architecture and also how do these nodes communicated and share URLs is shown in figure \ref{fig:hpart}.
+
 \begin{figure}[h!]
   \centering
-  \includegraphics[width=15cm,height=10cm,keepaspectratio]{../media/crawler/host-splitterv3.png}
+  \includegraphics[width=15cm,height=9cm,keepaspectratio]{../media/crawler/host-splitterv3.png}
   \caption{Host Partitioning}
   \label{fig:hpart}
 \end{figure}
 
+\noindent
+Lets say there are 3 different nodes designated to crawl the web $M_1, M_2, M_3$. All
+the hosts that are being crawled are partitioned into 3 sets. Imagine taking every
+single web server on the web or in the seed set, taking the URls for those servers, and hashing those URLs in the integer range $i \in \{1,2,3\}$. For instance, web
+server address \textit{usjobs.com} could get hashed to an integer 2. So all those URLs that are being stored by that web server will be parsed by node $M_2$ while the other two nodes do not fetch documents located on \textit{usjobs.com}.
+\\
+\\
+The key to the implementation is the host splitting component shown in figure \ref{fig:hpart}. The component at machine $M_1$ computes which machine is meant to crawl
+the URLs of \textit{usjobs.com}. It takes the URL, looks at its server's address and
+hash it to the integer 2 upon which it knows $M_2$ is supposed to crawl URLs located
+on this server and therefore sends it to node $M_2$. Looking at the snapshot of node $M_2$, it has passed content seen, URL filter tests which confirms the incoming URL
+from different node is valid and need not go through the tests again. The only thing node $M_2$ has to check is whether that URL already exists in its own local URL frontier version or its own DUE. If the URL is new, the node will add it to its own URL
+frontier. At the same time node $M_1$ simultaneously receives URLs that it is supposed to crawl from those other nodes $\{M_2, M_3\}$.
 \pagebreak
 
 \section{Automata Analogy}\index{Automata Analogy}
