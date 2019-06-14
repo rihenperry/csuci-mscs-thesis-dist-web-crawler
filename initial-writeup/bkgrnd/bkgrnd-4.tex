@@ -50,7 +50,7 @@ established methods to solve this problem.
 
 \pagebreak
 
-\subsection{URL Filtering}\index{URL Filtering}
+\subsection{URL Filtering}\label{urlfilter}
 The URL Filter component takes input a batch of extracted URLs, applies a series of tests, modifiers on each URL, composes a newer batch of URL which fall in its
 criteria and forwards it to the next subsystem. For instance, assume a set of links $\sum_{n=1}^{10}$ $ U_n$ extracted from page $p$, there is a possibility that some $U$'s link are relative to the page $p$, in
 such cases, this component normalizes such $U$'s turning them into absolute URLs. Also, the crawler can
@@ -95,7 +95,8 @@ access locality on the URL set.
 \pagebreak
 
 \subsection{URL Frontier}
-some text here
+The URL Frontier subsystem receives a batch of URLs from its counterpart(it is either DUE or hostsplitter in case of Distributed crawling). It maintains those URLs in the Frontier and propagates them in some order whenever the fetch module seeks a URL from it.
+
 \begin{figure}[h!]
   \centering
   \includegraphics[width=10cm,height=13cm,keepaspectratio]{../media/crawler/url-frontier.png}
@@ -103,8 +104,50 @@ some text here
   \label{fig:frontier}
 \end{figure}
 
+\noindent
+Figure \ref{fig:frontier} is not just a simple queue but a complicated data structure. It includes multiple pages from the same host. It avoids trying to fetch all those pages from the same host at the same time because may be the crawler can overload the server which is not a good policy. Also, the fetch module should not wait doing nothing, instead keep the module busy. Thus, it balances the tradeoff between not
+bombarding the server and also keeping the fetch module busy so that if fetch is not crawling that website
+at least it can go to some other server and fetch some pages from there.
+
 \pagebreak
-some text here
+
+\noindent
+Following are important considerations that dictate the order in which the URLs are returned or pulled from
+the frontier. As mentioned earlier, simple priority queue fails as there is high locality of pages that go
+to its own site, creating a burst of accesses to that site.
+
+\begin{itemize}
+\item \textbf{Explicit politeness:} obeys any specifications from webmaster on what portions of the site
+  site can be crawled, see section \ref{urlfilter} for more details.
+\item \textbf{Implicit politeness:} Avoids hitting any site too often even though no specification exist
+  on the site.
+  \item \textbf{Freshness:} crawl some pages more often that others.
+\end{itemize}
+
+\noindent
+A common heuristic to handle politeness is to insert a time $t$ gap between successive requests $r$ such
+that,
+\begin{align*}
+  t(r_i) &> t(r_{i-1}) \\
+  t(r_i) &= (K.l(r_{i-1})) + TS_{now} && \text{...$K$ is a variable delay factor}
+\end{align*}
+
+\noindent
+It is important to visualize URL Frontier diagram figure \ref{fig:frontier} before diving into its pieces. A URL follows the path into the Frontier and immediately encounters set of front queues $F$. It enters into one of these $F$ queues. There are also another set of queues called $B$ back queues. At some stage the URL will be pulled out of the front queue and then sent into one these back queues. Later, at some stage, it will be pulled out of that back queue and accessed by fetcher thread which then goes and actually fetches
+the document at that URL endpoint.
+\\
+\\
+\noindent
+Each front queue $F_m$ in range $\{1,2,3...m\}$  and back queue $B_n$ in range $\{1,2,3,...n\}$ is literally a $FIFO$ queue. The incoming URL gets classified into one of the ${1,2,3,..F}$ front queues
+
+\begin{itemize}
+\item \textbf{Front queues} $F_m$ manage prioritization. They influence the rate at which you ping the
+  same web server again and again.
+  \item \textbf{Back queues} $B_n$ enforces politeness.
+\end{itemize}
+
+\pagebreak
+
 \begin{figure}[h!]
   \centering
   \includegraphics[width=13cm,height=10cm,keepaspectratio]{../media/crawler/f-queue.png}
@@ -112,14 +155,50 @@ some text here
   \label{fig:fqueue}
 \end{figure}
 
+\noindent
+Figure \ref{fig:fqueue} gives a close inspection on Front Queues $F_m$. Incoming URL is assigned a integer  priority between 1 \& $m$. Based on the priority assigned it is going to enter that particular queue.
+priority $F_1$ holds URLs for web servers that need to be crawled very very frequently. For instance,
+let $L_s$ be links, $\forall L_s \in $ \textit{dice.com} $ \longmapsto $ $F_1$ has highest crawling requirement whereas $\forall L_s \in $ \textit{jobs.com} $ \longmapsto $ $F_m$ contains URLs which has least
+crawling requirement. 
+\\
+\\
+Heuristics for assigning priority,
+\begin{itemize}
+\item keeping track of how frequently the web pages are changing on a particular web server and how authoritative the pages are, if it occurs a case where a refresh rate is pretty high for any web server and pages happen to be important enough then those web servers are going to be crawled more often
+\item Application specific. 
+\end{itemize}
+
+\noindent
+The prioritizer function for whirlpool is explained in chapter \ref{implwhirlpool}, subsection \ref{priotizer}.Also randomize queue strategy on how the items get pulled out of this $F$ Front queues is explained in chapter \ref{implwhirlpool}, subsection \ref{fqbiased}. This sums the top half of the picture.
+
 \pagebreak
-some text here
+
+\noindent
+The back queue $B$ exist to achieve politeness because the crawler shouldn't hit the server too frequently.
+Again, there are $B$ back queues from $\{1,2,3,...n\}$, so when the URLs are pulled out in biased order from $F$ Front queues, they are going to enter into one or more of these back queues. 
+
 \begin{figure}[h!]
   \centering
   \includegraphics[width=13cm,height=10cm,keepaspectratio]{../media/crawler/b-queue.png}
   \caption{Frontier Back Queue}
   \label{fig:bqueue}
 \end{figure}
+
+\noindent
+Recall the heuristic to handle politeness explained earlier, each back queue $B_n$ corresponds to a particular domain. For e.g back queue $B_1$ is for server \textit{monster.com}, $B_2$ could be the server \textit{indeed.com}, and so on. So all the URLs which have base name \textit{dice.com}, when they emerge from the front
+queue enter queue $B_1$. Furthermore, Back queues maintains a minimum priority heap data structure in which
+the keys are such that the parent key $k$ is less than the key of both of its children i.e $k < 2k$ and $2k+1$ and so the smallest item in the heap is at the root of the heap.
+\\
+\\
+The size and vertex $V(q,t)$ of the heap is B. the key $q$ from vertex pair $(q, t)$ in it maps to one of the servers/back queues $B_n$. The value $t$ is going to be threshold timestamp $th_{ts}$ which is the value
+of time before which I am not allowed to hit the same server $B_n$ again. The very fact that back queue structure maintains a minimum heap is that its particular root represents the server which has the least value
+of the timestamp. Its the very server that is allowed to query next before it queries any of those other servers. A URL $u$ is pulled out from the head of server queue $q$ and fetched by fetch module. This is handled by back queue selector function
+\\
+\\
+While this cycle continues, the back queue router ensures the server queues $B_n$ are non-empty.  It is busy with pulling a URL $u`$ from the head of front queue picked up by some randomize front queue function. Following this, it checks whether server queue $q$ exists for $u`$, if so, then it gets added to that queue. It goes again to pull another URL $w$, this time it sees that server queue $q$ is now empty and there insert $w$ in it and renames the $q$ to $q`$. During the same iteration, the process sinks a new vertex
+$V`(q`,t`)$ based on the meta-information of $w$ such as time $t`$.
+
+
 
 \pagebreak
 some text here
