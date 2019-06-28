@@ -12,8 +12,10 @@ source code.
 This thesis is an attempt to implement a small-scale, special purpose crawler for collecting data on job postings from
 numerous job portals active on the web. This will help job seekers monitor openings of interest and
 act accordingly. This thesis does not deal with data mining but instead focuses on the design, implementation, and deployment of web crawler to perform data collection on given seed set. The crawler architecture builds on a open blueprint design of \textit{Mercator}\cite{mercator} which describes the design in enough detail but leaves out implementation specifics to developers.
-\\
-\\
+
+\pagebreak
+
+\section{Contributions}
 \begin{itemize}
   \item \textbf{Use of Message Queue:} In one case, the paper doesn't provides information on how the subsystems that make up a crawler are connected together. This thesis makes use of message broker to facilitate collaboration between components thus providing asynchronous, event-driven style of communication. It also highlights its strengths \& weakness.
    \item \textbf{Crawl Ordering Problem:} A more crucial issue is without having a target to crawl, the problem of crawling becomes endless, infinite crawling even for specialized crawler such as this. This thesis discusses the crawl ordering strategy to shape its crawling only to specific content.
@@ -23,6 +25,7 @@ act accordingly. This thesis does not deal with data mining but instead focuses 
     \item \textbf{Microservices:} Lastly, this thesis explains the philosophy, principles behind microservices \cite{microservices} by relating it to work done in this thesis.
 \end{itemize}
 
+\pagebreak
 
 \section{Motivation}\index{Motivation}
 Implementing a web crawler can be seen as a fancy project and its complexity can easily be overlooked.

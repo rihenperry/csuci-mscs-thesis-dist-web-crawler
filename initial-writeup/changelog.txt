@@ -1,0 +1,14 @@
+# Changelog
+
+All notable changes to the thesis document since submitting the very first document to Dr. Soltys.
+
+## [Unreleased]
+### Added
+- A dedicated section on 'Contributions' immediately after 'Introduction'.
+
+### Fixed
+- aws deploy diagram
+
+## [1.0.0] - 2019-06-27
+- Submitted enough material of the thesis to Dr. Soltys for comments, feedback, etc.
+

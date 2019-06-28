@@ -34,7 +34,7 @@ Figure \ref{fig:infra10k} uses Classless Inter-Domain Routing(CIDR) block of \ip
 gives a range of \ipAddress{64} IPv4 addresses. This thesis uses a tool \cite{cidr} to calculate CIDR
 blocks. AWS VPC reserves first four and last IPv4 addresses of each subnet created for internal usage and
 therefore cannot be assigned to any instance of any resource. The primary CIDR block size of VPC is used
-then used to create 3 subnets within the VPC each with a non-overlapping CIDR block size. The minimum
+then used to create 4 subnets within the VPC each with a non-overlapping CIDR block size. The minimum
 subnet size allowed is \ipAddress{28} and \ipAddress{16}.
 \\
 \\
@@ -43,14 +43,20 @@ CIDR block size is given by $2^{(32 - x)}$, substituting $x$ = 26 yields,
   2^{(32 - 26)} &= 64 && \text{IP addresses} \\
 \end{align*}
 \\
-3 subnets formation = $\underbrace{16}_\text{public}$ + $\underbrace{16}_\text{1st private}$ + $\underbrace{32}_\text{2nd private}$
+\[
+\text{4 subnets formation} = \underbrace{16}_\text{public subnet} + \overbrace{\underbrace{16}_\text{private db subnet 1} + \underbrace{16}_\text{private db subnet 2}}^\text{DB Subnet Group} + \underbrace{16}_\text{private crawler subnet} 
+\]
 \\
 \\
-Actual IP addresses available = $\underbrace{11}_\text{public}$ + $\underbrace{11}_\text{1st private}$ + $\underbrace{27}_\text{2nd private}$
+\[
+\text{Actual IP addresses available} = \underbrace{11}_\text{public subnet} + \overbrace{\underbrace{11}_\text{private db subnet 1} + \underbrace{11}_\text{private db subnet 2}}^\text{DB Subnet Group} + \underbrace{11}_\text{private crawler subnet}
+\]
 \\
 \\
 Public subnet IP range = \ipAddress{10.0.0.0/28} $\rightarrow$ (0 - 15)
 \\                                                
-1st Private subnet IP range = \ipAddress{10.0.0.0/28} $\rightarrow$ (16 - 31)
+Private db subnet 1 IP range = \ipAddress{10.0.0.16/28} $\rightarrow$ (16 - 31)
 \\                                                
-2nd Private subnet IP range = \ipAddress{10.0.0.0/28} $\rightarrow$ (32 - 64)
+Private db subnet 2 IP range = \ipAddress{10.0.0.32/28} $\rightarrow$ (32 - 47)
+\\
+Private crawler subnet IP range = \ipAddress{10.0.0.48/28} $\rightarrow$ (48 - 64)

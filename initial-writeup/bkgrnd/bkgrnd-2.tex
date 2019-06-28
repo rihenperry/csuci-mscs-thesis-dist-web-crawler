@@ -25,7 +25,7 @@ pages are capable of dynamically changing content and popularity of Single Page 
 enabled rendering data through view logic controlled by javascript.
 \\
 \\
- As shown in the figure \ref{fig:crawlorder}, \textit{Comprehensive Crawling} focuses on maximizing coverage by reaching out to content of all types.
+As shown in the figure \ref{fig:crawlorder}, \textit{Comprehensive Crawling} focuses on maximizing coverage by reaching out to content of all types.
 A particular page $p$ is weighted important by counting external links outside current site's perimeter. Crawl order policies like Breath-first Search, PageRank, and other variations are applied. Such activity
 is carried out by Commericial Search Engines.
 \\
@@ -37,12 +37,13 @@ data collection on topic of interest.\textit{Topical Crawling} is a form of Scop
 
 \begin{enumerate}
 \item Fish Search (Binary classificaiton). Here, the relevance is measured by treating links within visited
-  page either relevant/ire-relevant upto a certain height.
+  page either relevant/irrelevant upto a certain height.
 \item The relevance is estimated by doing textual analysis on text surrounding a link in a visited page $p$
   that points to yet-to-be visited page $q$.
 \item Train and query a Machine Learning classifier to get the score of set of topics of interest to crawl.
 \end{enumerate}
 
+\noindent
 This crawler has to balance its greediness level by considering page relevance. It is possible that a
 already relevant page $p$ may not always yield a new relevant page but it might would after going through
 several links of irrelevant pages. If the crawler is designed to be too greedy then it will have zero

@@ -52,7 +52,7 @@ established methods to solve this problem.
 
 \subsection{URL Filtering}\label{urlfilter}
 The URL Filter component takes input a batch of extracted URLs, applies a series of tests, modifiers on each URL, composes a newer batch of URL which fall in its
-criteria and forwards it to the next subsystem. For instance, assume a set of links $\sum_{n=1}^{10}$ $ U_n$ extracted from page $p$, there is a possibility that some $U$'s link are relative to the page $p$, in
+criteria and forwards it to the next subsystem. For instance, assume a set of links $\{U_1,U_2,U_3,U_4,...,U_i\}$ extracted from page $p$, there is a possibility that some $U$'s link are relative to the page $p$, in
 such cases, this component normalizes such $U$'s turning them into absolute URLs. Also, the crawler can
 enforce a rule to exclude out of bound URls - those that don't fall within a given list of domains. 
 
