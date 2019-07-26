@@ -7,7 +7,9 @@ All notable changes to the thesis document since submitting the very first docum
 - A dedicated section on 'Contributions' immediately after 'Introduction'.
 
 ### Fixed
-- aws deploy diagram
+- aws 5000 ft. deploy diagram - made corrections to DB subnet group
+- changed rmq central message bus diagram - added vhost to logically separate frontier and general
+  components
 
 ## [1.0.0] - 2019-06-27
 - Submitted enough material of the thesis to Dr. Soltys for comments, feedback, etc.
