@@ -9,10 +9,70 @@
 \subsection{Relational Database Service (RDS)}
 \subsection{Elastic Cache}
 \subsection{MongoDB}
+
+\pagebreak
+
 \subsection{AWS Cloudformation}
+According to aws documentation \cite{docker}, cloudformation(CF) is a service which lets you model and set up
+aws resources so that you spend less time managing resources and focus more on application logic that runs
+on those resources. Basically, in a template you describe all resources that make your architecture. You
+dont need to individually create and configure aws resources and figure what what's dependent on what.
+\\
+\\
+some scenarios that demonstrate how aws cloudformation can help.
+\begin{itemize}
+    \item simplify infrastructure management
+    \item quickly replicate infrastructure
+    \item easily control and track changes in your infrastructure
+\end{itemize}
+\\
+Some of the big concepts in CF are \textit{Templates}, \textit{Stacks}, and \textit{ChangeSets}.
+\begin{itemize}
+\item \textbf{Templates:} CF uses templates saved in TXT, YML, or JSON as a blueprint for building AWS
+  resources. The templates can be reused on altogether different regions by supplying input parameters at the time of stack creation.
+\item \textbf{Stacks:} CF manages related resources as a single unit called a stack. Creating, updating,
+  and deleting a collection of resources is done by creating, updating, and deleting stacks. All the
+  resources in a stack are defined by the specified CF template. To create resources which involves 
+  - Auto-Scaling group, Elastic Load Balancer(ELB), and an Amazon RDS database instance, create a stack by
+  submitting the template consisting of those resources and CF provisions all those resources on your
+  behalf. This requires a service role to be present before CF can actually create resources, refer to
+  section \ref{iamroles} under whirlpool operations. To addon, Stacks can be operated using AWS CF console, APIs, and AWS CLI.
+\item \textbf{ChangeSets:} Making changes to the running resources in a stack, updates the stacks. Before
+  changes are applied to the resources, a change set is generated which is a summary of proposed changes.
+  ChangeSets makes the operator see how the his/her changes might impact current running resources,
+  especially for critical resources, before implementing them. For example, if the name of the db
+  identifier of Amazon RDS instance is changed, CF will create a new database and delete the one one.
+  Data in the old database gets lost unless it was already backed up. If the given changeset is generated,
+  operator will see that the change will cause database to be replaced and therefore the operator will be
+  able to plan accordingly before update to a stack is applied.
+\end{itemize}
+
+\pagebreak
+
 \subsection{AWS Monthly Calculator}
 
 \pagebreak
 \section{Docker Containers}\index{Docker Containers}
+A docker container along with docker-engine is something. 
+
 \subsection{DockerFile}\index{DockerFile}
+(place a sample of the file here)
+\begin{itemize}
+\item RUN is an image build step, the state of the container after a RUN command will be committed to the docker image.
+  A Dockerfile can have many RUN steps that layer on top of one another to build the image. Note than each RUN command
+  will create a new layer and therefore affects the size of the container. It is advisable to club together unix command
+  in a single RUN statement to avoid unnecessary container size increase.
+\item CMD is the command the container executes by default when you launch the built image.
+  A Dockerfile can only have one CMD. The CMD can be overridden when starting a container with docker run
+  `image` other_command.
+\item ENTRYPOINT is also closely related to CMD and can modify the way a container starts an image.
+\item VolUMES useful to map a directory from container to host. Can be specified explicitly or using docker
+  volumes - docker volume create 'sample-volume' and setting external volume to true.
+\item ARG & ENV
+\item FROM base-image as some-other-image used to specify targets to package a specific build
+\item external networks
+\end{itemize}
+
+
 \subsection{Docker Compose}\index{Docker Compose}
+docker-compose is installed separately and is optional
