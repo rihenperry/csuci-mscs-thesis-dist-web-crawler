@@ -1,4 +1,22 @@
 % Implement Chapter Continued
 \section{Boot Process}\index{Boot Process}
-To be complete
+% \begin{lstlisting}[language=bash]
+%   $ aws s3 cp whirlpool-cf-template.yml s3://whirlpool-cf-templates/
+% 
+%   $ aws cloudformation create-stack \
+%   --stack-name whirlpool-crawler \
+%   --template-body <x.yml> \
+%   --profile whirlpool \
+% 
+%   $ scp prod-docker-compose.yml whirlpool-crawler-1:~/
+% 
+%   $ docker-compose -f prod-docker-compose.yml up -d
+% 
+%   $ aws cloudformation delete-stack --stack-name whirlpool-crawler
+% \end{lstlisting}
+
+A fresh installation of whirlpool crawler comprising of multiple services begins by first packaging
+production environment docker container of each service.
+
+
 \pagebreak

@@ -3,12 +3,14 @@
 \usepackage{graphicx}
 \usepackage{xcolor,colortbl}
 \usepackage{listings} % Allows code-listings
+\usepackage{minted}
 \usepackage{wrapfig}
 \usepackage{courier} % proper monospace font for code
 \usepackage{lscape}
 \usepackage{amsmath}
 \usepackage{siunitx}
 \usepackage{lipsum}
+\usepackage{etoolbox}
 \usepackage{rotating}
 \usepackage{fontspec}
 \usepackage{epstopdf}
@@ -31,8 +33,9 @@
 \usepackage{amsmath}
 \usepackage{algorithm}
 \usepackage[noend]{algpseudocode}
+%\usepackage{setspace}
+%\onehalfspacing
 
-%\usemintedstyle{}
 %\usetikzlibrary{automata,positioning,calc}
 %\usepackage{subcaption}
 
@@ -81,16 +84,17 @@
       ItalicFont       = texgyrepagella-italic.otf ,
       BoldItalicFont   = texgyrepagella-bolditalic.otf ]
       {texgyrepagella-regular.otf}
-    
-  % same like the main font, but without old-style nums
-  \newfontfamily\newnums
-    [ ExternalLocation ,
+
+% same like the main font, but without old-style nums
+\newfontfamily\newnums
+[ ExternalLocation ,
       Mapping          = tex-text ,
       Ligatures        = {Common,Contextual} ,
       BoldFont         = texgyrepagella-bold.otf ,
       ItalicFont       = texgyrepagella-italic.otf ,
       BoldItalicFont   = texgyrepagella-bolditalic.otf ]
     {texgyrepagella-regular.otf}
+
 
 %\DeclareCaptionFont{blue}{\color{blue}} 
 
@@ -104,7 +108,9 @@
 \newcommand{\hsp}{\hspace{20pt}}
 \newcommand{\HRule}{\rule{\linewidth}{0.5mm}}
 
-
+%\setmonofont[Mapping=tex-text]{Courier New}
+%\setmonofont[Mapping=tex-text]{Anonymous Pro}
+\setmonofont[Mapping=tex-text]{Inconsolata Bold}
 
 \newcommand{\img}[2]{ %images with borders
 	\begin{figure}[H]
@@ -149,3 +155,13 @@
 }
 
 \titleformat{\chapter}[hang]{\Huge\bfseries}{\thechapter\hsp\textcolor{gray75}{|}\hsp}{0pt}{\Huge\bfseries}
+
+\lstdefinestyle{Inline}
+{
+    literate={\\-}{}{0\discretionary{-}{}{}}
+}
+
+\AtBeginEnvironment{quote}{\singlespacing\small}
+
+\definecolor{monokaibg}{HTML}{272822}
+\definecolor{friendlybg}{HTML}{f0f0f0}
