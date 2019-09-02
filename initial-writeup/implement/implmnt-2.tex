@@ -22,12 +22,32 @@ The initial rabbitmq configuration is shown in the \url{https://github.com/rihby
 
 \pagebreak
 
-\subsection{Using Docker for Development Environment}\label{devdocker}
+\subsection{Developing with Docker}\label{devdocker}
 showcase a dev docker setup(docker-compose.build.yml)
+
+%\inputminted[
+%fontfamily=tt,
+%baselinestretch=1.2,
+%fontsize=\footnotesize,
+%linenos,
+%breaklines,
+%numbersep=5pt,
+%tabsize=2,
+%frame=single]{js}{../../whirlpool/crawler/whirlpool-user-iam-ec2-vpc-policy.json}
+
 
 \pagebreak
 
 \subsection{Parser \& its Crawl Ordering Problem}\index{Parser \& its Crawl Ordering Problem}
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=15cm,height=12cm,keepaspectratio]{../media/crawler/docparsers.png}
+  \caption{Whirlpool Parser subsystem using Dependency Injection}
+  \label{fig:htmlparser}
+\end{figure}
+
+\pagebreak
+
 \subsection{URL filtering algorithm}\index{URL Frontier}
 \subsection{URL Frontier}\index{URL Frontier}
 \subsubsection{Prioritizer Policy}\label{priotizer}
