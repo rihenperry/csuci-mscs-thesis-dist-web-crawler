@@ -76,17 +76,81 @@ piece of software supporting DI framework include:
 \subsection{Principles for designing scalable systems}
 When a piece of software needs to grow to a size requiring horizontal scalability, careful thought must
 be given to tradeoffs between endless scalability and practicality of each solution. Also assessment of not
-overengineering the solution needs to taken into account. Here are basic design techniques that help design
-scalable systems.
+overengineering the solution needs to taken into account. Three techniques that help design scalable
+systems. Each one has different advantages and different cost.
 \\
 \\
 \begin{itemize}
-  \item \textbf{Adding identical copies of components}
-  \item \textbf{Functional partitioning}
-  \item \textbf{Data partitioning}
+\item \textbf{Adding identical copies of components}: This is easy and most common scaling strategy
+  applied to application build from scratch. Identical copies of components or server equally serve
+  incoming request. A client request to any one of random cluster of clones yields correct results.
+  This scaling strategy is not restricted only to client-server applications but also applicable to
+  autonomous program like web crawlers. Mercator crawler described in this report uses exact copies
+  of crawler onto individual machines and distributes traffic through its host splitter component.
+\item \textbf{Functional partitioning}: Identifying parts of the system focused on specific functionality
+  and creating independent subsystems out of them.
+  \begin{figure}[h!]
+    \centering
+    \includegraphics[width=13cm,height=10cm,keepaspectratio]{../media/crawler/netflix.png}
+    \caption{Functional Partitioning in Netflix as an example}
+    \label{fig:netflix}
+  \end{figure}
+Figure \ref{fig:netflix} shows how a netflix streaming service is divided into two major subsystems -
+the video processor and the content streamer. This brings a lot of benefits but also increasing
+engineering challenges. The main benefits are both service operate independently, parallel teams work
+on independent codebases. Each service scales independently of other.
+\item \textbf{Data partitioning}: Refers to maintaining subset of data onto each machine and controlling
+  its state independent of other machines. This is the application of shared-nothing principle. With no
+  data sharing, there is no data synchronization, no need for locking on global data store, and so
+  failures can be isolated because nodes are not dependent on each other. A simplistic approach of data
+  partitioning is distributing objects among machines based on first english alphabets of lookup key
+  which maps to actual machine. A more sophisticated technique will use consistent hashing to partition
+  subset of data fairly among machines and keeps distribution fair when capacity is increased/decreased.
+  Hence, data when partition correctly, provides endless scalability - adding more users, handle more
+  parallel connections, collecting more data and deploy program onto more servers.
 \end{itemize}
 
 \pagebreak
 
 \subsection{Managing State}\label{managestate}
-Managing state is often overlooked aspect when addressing the scaling problem of the application.
+Managing state is often overlooked aspect when addressing the scaling problem of the application. If not done properly, it can create barriers to scale the application well. In a program environment where identical copies are used to perform some
+computation, nodes using its own local/in-memory to cache objects are extremely
+difficult/tricky to coordinate cache invalidation. In such cases, it is best to
+maintain a global shared cache store so there is only one copy of each object and
+easier to invalidate.
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=10cm,height=8cm,keepaspectratio]{../media/crawler/multi-cache-wrng.png}
+  \caption{redundant copes of same cached object}
+  \label{fig:wrngcache}
+\end{figure}
+\\
+\\
+\noindent
+Once you have a shared resource such as shared cache, for accessing them, locks are used to prevent race conditions and to synchronize access to shared resources. To achieve Horizontal Scalability(HS), distributed locks systems such as zookeeper \cite{zookeeper} or chubby \cite{chubby} can be considered. Many apps use local locks which causes bottlenecks. Instead of trying to share locks on web servers, you
+should push the state out of applns servers similar to http session data store.
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=10cm,height=8cm,keepaspectratio]{../media/crawler/wrng-local-locks.png}
+  \caption{local locks preventing HS}
+  \label{fig:wrnglocks}
+\end{figure}
+\\
+\\
+\noindent
+To avoid this, use a combination of functional partitioning and scaling out using
+clones. Remove the locking functionality from the application code and create an
+independent service from it. Then let your web app servers use shared lock service
+to share locks globally.
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=13cm,height=10cm,keepaspectratio]{../media/crawler/rght-shared-locks.png}
+  \caption{clones using shared locks}
+  \label{fig:rghtlocks}
+\end{figure}
+\\
+\\
+\noindent
+Potential disadvantage to using shared lock management is increased latency. Locks
+can be easily implemented with memcached/redis but not as robust as Zookeeper, as
+you can't get notifications when a lock gets released.
