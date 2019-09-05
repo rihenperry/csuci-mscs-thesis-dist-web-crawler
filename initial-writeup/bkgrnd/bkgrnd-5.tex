@@ -138,19 +138,24 @@ should push the state out of applns servers similar to http session data store.
 \\
 \\
 \noindent
-To avoid this, use a combination of functional partitioning and scaling out using
-clones. Remove the locking functionality from the application code and create an
-independent service from it. Then let your web app servers use shared lock service
-to share locks globally.
+To prevent the condition shown in figure \ref{fig:wrnglocks}, rule of thumb is to
+use a combination of functional partitioning and scaling out using clones. Remove
+the locking functionality from the application code and create an independent
+service from it. Then lets the program clones use shared lock service to share
+locks globally.
+
+\pagebreak
+
 \begin{figure}[h!]
   \centering
   \includegraphics[width=13cm,height=10cm,keepaspectratio]{../media/crawler/rght-shared-locks.png}
-  \caption{clones using shared locks}
+  \caption{clones using shared locking mechanism}
   \label{fig:rghtlocks}
 \end{figure}
 \\
 \\
 \noindent
-Potential disadvantage to using shared lock management is increased latency. Locks
-can be easily implemented with memcached/redis but not as robust as Zookeeper, as
-you can't get notifications when a lock gets released.
+Potential disadvantage to using shared lock management is the increased latency.
+Locks can be easily implemented with memcached/redis but not as robust as Zookeeper,
+as it offers useful functionality for example - receiving notifications when a
+lock gets released.
