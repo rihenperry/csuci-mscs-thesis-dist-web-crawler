@@ -129,9 +129,19 @@ A common heuristic to handle politeness is to insert a time $t$ gap between succ
 that,
 \begin{align*}
   t(r_i) &> t(r_{i-1}) \\
-  t(r_i) &= (K.l(r_{i-1})) + TS_{now} && \text{...$K$ is a variable delay factor}
+  t(r_i) &= (K.l(r_{i-1})) + TS && \text{...$K$ is a variable delay factor}
 \end{align*}
 
+\noindent
+meaning the time taken by successive request $t(r_i)$ is order of magnitude larger than time taken by
+most recently fetched $t(r_{i-1}$ request. $K$ is the Crawl-Delay attribute found in web hosts robot-exclusion protocol. It varies
+from host to host and its presence is basically to inform target crawler agent that it may revisit the
+host in integer N, where N is usually seconds. On web servers where this attribute is not specified,
+general rule of thumb is to set K to 10 sec. $l(r_{i-1})$ is the latency of the request and $TS$ is the
+timestamp. $K$, $l$, and $TS$ is the time buffer which is specific to this thesis crawler implementation
+and is the earliest time $t(r_i)$ at which the host can be hit again.
+\\
+\\
 \noindent
 It is important to visualize URL Frontier diagram figure \ref{fig:frontier} before diving into its pieces. A URL follows the path into the Frontier and immediately encounters set of front queues $F$. It enters into one of these $F$ queues. There are also another set of queues called $B$ back queues. At some stage the URL will be pulled out of the front queue and then sent into one these back queues. Later, at some stage, it will be pulled out of that back queue and accessed by fetcher thread which then goes and actually fetches
 the document at that URL endpoint.

@@ -10,8 +10,6 @@ different AWS services and docker used to interweave an environment for executin
 
 \section{Basic Crawling Algorithm}\label{basicalgo}
 The basic operation of any HTTP based crawler goes like this:
-\\
-\\
 \begin{algorithm}
 %\caption{My algorithm}\label{euclid}
 \begin{algorithmic}[1]
@@ -30,6 +28,12 @@ The basic operation of any HTTP based crawler goes like this:
 \State \textbf{end}
 \end{algorithmic}
 \end{algorithm}
+
+\noindent
+The first run of a typical crawler program visits the links $U_i$ from a finite seed set $S$, shown above. 
+The set $S$ is copied to frontier queue $U_f$ which handles the logic to output the most appropriate url $L$ to be visited. In a simple setting, the frontier queue $U_f$ can be imagined as a classical FIFO queue,
+however, it is much complex assembly of queues in real-world crawlers. While queue $U_f$ is not empty, url $u$ is pulled out from the frontier. The $fetch$ function yields HTML page $p$ after visiting u. Next step,
+page $p$ is scrapped to obtain textual data $T$ and list of new links $L$. Finally, list of links are merged into $U_f$. care is taken to disregard $l$ that is already queued in $U_f$.
 
 \pagebreak
 

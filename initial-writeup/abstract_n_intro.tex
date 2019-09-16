@@ -5,13 +5,12 @@ disk either in raw format or after extracting its contents. Sometimes they are a
 purposes. Web search engines are very well-known systems powered internally through crawlers.
 Other uses are web data mining for performing analytics, archiving portions of the web - a
 relevant active project is the Wayback Machine from The Internet Archive\cite{netarchive} operating since 2000. Most recently,
-there is an ongoing attempt from Software Heritage\cite{swheritage} to preserve publicly available
-source code.
+there is an ongoing attempt from Software Heritage\cite{swheritage} that continuously crawl \& archive publicly available source code repositories on the web.
 \\
 \\
-This thesis is an attempt to implement a small-scale, special purpose crawler for collecting data on job postings from
-numerous job portals active on the web. This will help job seekers monitor openings of interest and
-act accordingly. This thesis does not deal with data mining but instead focuses on the design, implementation, and deployment of web crawler to perform data collection on given seed set. The crawler architecture builds on a open blueprint design of \textit{Mercator}\cite{mercator} which describes the design in enough detail but leaves out implementation specifics to developers.
+This thesis is an attempt to implement a small-scale, special purpose crawler for collecting data about
+various job postings from a chosen set of job portals active on the web. As far as the scope of this thesis
+is concerned, the work done here does not dive into cleaning \& analyzing the data set but instead focuses on its system design, implementation, and deployment of web crawler to perform data collection on given seed set. The crawler architecture builds on a open blueprint design of \textit{Mercator}\cite{mercator} which describes the design in enough detail but leaves out implementation specifics to developers.
 
 \pagebreak
 
@@ -28,6 +27,14 @@ act accordingly. This thesis does not deal with data mining but instead focuses 
 \pagebreak
 
 \section{Motivation}\index{Motivation}
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=14cm,height=12cm,keepaspectratio]{../media/crawler/data_hierarchy.png}
+  \caption{\underline{Source}: Monica Rogati's "The AI hierarchy of Needs"}
+  \label{fig:datahierarchy}
+\end{figure}
+
 Implementing a web crawler can be seen as a fancy project and its complexity can easily be overlooked.
 Given the apparent simplicity of basic crawling algorithm. It posses numerous challenges. First of all,
 crawling the whole web is simply unrealistic even for the world's most advanced crawlers. Considering the
