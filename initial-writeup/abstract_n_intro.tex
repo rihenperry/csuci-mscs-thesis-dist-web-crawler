@@ -10,33 +10,55 @@ there is an ongoing attempt from Software Heritage\cite{swheritage} that continu
 \\
 This thesis is an attempt to implement a small-scale, special purpose crawler for collecting data about
 various job postings from a chosen set of job portals active on the web. As far as the scope of this thesis
-is concerned, the work done here does not dive into cleaning \& analyzing the data set but instead focuses on its system design, implementation, and deployment of web crawler to perform data collection on given seed set. The crawler architecture builds on a open blueprint design of \textit{Mercator}\cite{mercator} which describes the design in enough detail but leaves out implementation specifics to developers.
+is concerned, the work done here does not dive into cleaning \& analyzing the data set but instead focuses on its system design, implementation, and deployment. The crawler architecture builds on a open blueprint design of \textit{Mercator}\cite{mercator} which describes the design in enough detail but leaves out implementation specifics to developers.
 
 \pagebreak
 
 \section{Contributions}
 \begin{itemize}
-  \item \textbf{Use of Message Queue:} In one case, the paper doesn't provides information on how the subsystems that make up a crawler are connected together. This thesis makes use of message broker to facilitate collaboration between components thus providing asynchronous, event-driven style of communication. It also highlights its strengths \& weakness.
+  \item \textbf{Use of Message Broker:} In one case, the papers doesn't provides information on how the subsystems that make up a crawler are connected together. This thesis makes use of message broker to facilitate collaboration between components thus providing asynchronous, event-driven style of communication. It also highlights its strengths \& weakness.
    \item \textbf{Crawl Ordering Problem:} A more crucial issue is without having a target to crawl, the problem of crawling becomes endless, infinite crawling even for specialized crawler such as this. This thesis discusses the crawl ordering strategy to shape its crawling only to specific content.
    \item \textbf{Distributing the crawl:} Furthermore, this thesis shows the shortcomings of linear hashing used for partitioning hosts to distribute the crawl and instead employs consistent hashing\cite{consisthash} algorithm and discuss its merits over it.
-    \item \textbf{Development strategy:}  Given this complex program at hand, it becomes obvious to separate the concerns by developing and testing each component in isolated pieces. This thesis leverages docker containers to build the project in stages. It allows to split the development and production environment by building images for the target platform to run the component.
+    \item \textbf{Development strategy:}  Given this complex program at hand, it becomes obvious to separate the concerns by developing each component in isolated pieces. This thesis leverages docker containers to build the project in stages. It allows to split the development and production environment by building images for the target platform to run the component.
     \item \textbf{AWS Services:} For running the crawler activity, this thesis makes the most of AWS 12-month free tier access by combining together suite of services and sketches an infrastructure to setup, deploy and demonstrate the program.
     \item \textbf{Microservices:} Lastly, this thesis explains the philosophy, principles behind microservices \cite{microservices} by relating it to work done in this thesis.
 \end{itemize}
 
 \pagebreak
 
-\section{Motivation}\index{Motivation}
+\section{Motivation(the big ideas)}
+A long term goal of this project is to built the infrastructure to run basic data science algorithms on the collected data and to tune the program characteristics to balance coverage \& freshness(refer section \ref{covfresh}). A web crawler has its place at the very bottom of the pyramid(figure \ref{fig:datahierarchy} doing instrumentation and logging.
 
 \begin{figure}[h!]
   \centering
   \includegraphics[width=14cm,height=12cm,keepaspectratio]{../media/crawler/data_hierarchy.png}
-  \caption{\underline{Source}: Monica Rogati's "The AI hierarchy of Needs"}
+  \caption{\underline{Source}: Monica Rogati's "The AI hierarchy of Needs"\cite{datasci}}
   \label{fig:datahierarchy}
 \end{figure}
 
-Implementing a web crawler can be seen as a fancy project and its complexity can easily be overlooked.
-Given the apparent simplicity of basic crawling algorithm. It posses numerous challenges. First of all,
+\noindent
+Data science is used to build data products, optimize business activity, and also to gain insights into
+consumer behavior. Lot of companies are eager to adopt it but all these things can be achieved correctly
+by building the layers of foundational work first.
+\\
+\\
+According to Monica Rogati,
+\\
+\\
+\say{Think of Artificial Intelligence as the top of a pyramid of needs. Yes, self-actualization (AI) is great, but you first need food, water, and shelter (data literacy, collection, and infrastructure).}
+\\
+\\
+\noindent
+The skill and experience for building such data-intensive applications fall under the discipline of
+\underline{data engineering}\cite{dataengr}. It is a superset of \textit{data warehousing}, specializing
+around the operation of distributed systems, stream processing, and handling computation at scale.
+
+
+\pagebreak
+
+\noindent
+A web crawler can be seen as a fancy project and its complexity can easily be overlooked.
+Given the apparent simplicity of basic crawling algorithm, it posses numerous challenges. First of all,
 crawling the whole web is simply unrealistic even for the world's most advanced crawlers. Considering the
 current scale of web and while its still evolving, it is important to think thoroughly about
 characteristics of a crawler, because this brings control in the hands of developers, it enriches the
