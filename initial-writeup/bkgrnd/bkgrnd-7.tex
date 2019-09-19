@@ -53,26 +53,45 @@ Some of the big concepts in CF are \textit{Templates}, \textit{Stacks}, and \tex
 
 \pagebreak
 \section{Docker Containers}\label{dockerintro}
-A docker container along with docker-engine is something. 
+Containers are used to develop and build apps once, locally and run anywhere. Being flexible and lightweight, they are used to containerized complex programs such as this. Docker has its own terminology and concepts to be able to use it correctly. So a
+docker image is a executable package that includes everything required to run the
+program. A running instance of an image is called a container.
 
-\subsection{DockerFile}\index{DockerFile}
-(place a sample of the file here)
-\begin{itemize}
-\item RUN is an image build step, the state of the container after a RUN command will be committed to the docker image.
-  A Dockerfile can have many RUN steps that layer on top of one another to build the image. Note than each RUN command
-  will create a new layer and therefore affects the size of the container. It is advisable to club together unix command
-  in a single RUN statement to avoid unnecessary container size increase.
-\item CMD is the command the container executes by default when you launch the built image.
-  A Dockerfile can only have one CMD. The CMD can be overridden when starting a container with docker run
-  `image` other_command.
-\item ENTRYPOINT is also closely related to CMD and can modify the way a container starts an image.
-\item VolUMES useful to map a directory from container to host. Can be specified explicitly or using docker
-  volumes - docker volume create 'sample-volume' and setting external volume to true.
-\item ARG & ENV
-\item FROM base-image as some-other-image used to specify targets to package a specific build
-\item external networks
-\end{itemize}
+\subsection{DockerFile}
+\inputminted[
+fontfamily=tt,
+baselinestretch=1.2,
+fontsize=\footnotesize,
+linenos,
+numbersep=5pt,
+tabsize=2,
+frame=single]{yaml}{../../whirlpool/crawler/whirlpool-urlfilter/Dockerfile}
 
+\noindent
+This is a dockerfile for \texttt{whirlpool-parser} docker image, it defines what goes on in the environment inside your container.
+
+\pagebreak
 
 \subsection{Docker Compose}\index{Docker Compose}
-docker-compose is installed separately and is optional
+docker-compose is not bundled with docker utility and therefore installed
+separately. Compose is a tool for defining multi-container applications. For
+e.g, rest api, database server, redis cache are the services that make up
+application stack and can be launched with single compose command.
+
+\begin{minted}[]{yaml}
+  version: '3'
+  services:
+    rest-api:
+      build: .
+      ports:
+      - "5000:5000"
+      volumes:
+      - .:/code
+      - logvolume01:/var/log
+      links:
+      - redis
+    redis:
+      image: redis
+  volumes:
+    logvolume01: {}
+\end{minted}
