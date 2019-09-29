@@ -1,21 +1,60 @@
 % background chapter continued
 
-\section{Amazon Web Services}\index{Amazon Web Services}
-\subsection{Identity \& Access Management (IAM)}
-\subsection{Virtual Private Cloud (VPC)}\index{Virtual Private Cloud (VPC)}
-\subsection{Internet Gateway (IGW)}
-\subsection{Network Address Translation (NAT)}
-\subsection{Elastic Compute Cloud (EC2)}\index{Elastic Compute Cloud (EC2)}
-\subsection{Relational Database Service (RDS)}
-\subsection{Elastic Cache}
-\subsection{MongoDB}
+\section{Amazon Web Services(AWS)}
+AWS is an on-demand cloud computing platform delivering technical infrastructure to customers through its
+web services. The customers are billed on a metered pay-as-you-go basis. Following is a short summary of
+list of services applied to run the whirlpool web crawler.
+
+\begin{description}
+  \item[Identity \& Access Management (IAM)] \hfill \\
+    IAM is a free of charge access control service. Allows aws account holder to create and manage AWS
+    users groups, and roles. Also enforce permissions on them to allow/deny access to AWS resources
+    by attaching to it managed and custom policies.
+  \item[Virtual Private Cloud (VPC)] \hfill \\
+    VPC is a logically isolated virtual network environment that solutions architect provisions within
+    which you can launch other AWS resources. A VPC is typically composed of public and private subnets.
+    You can attach route tables to faciliate communication between different subnets and add a combination
+    of stateful/stateless firewalls.
+
+  \item[Internet Gateway (IGW)] \hfill \\
+    IGW is a VPC component which is attached to the VPC that establishes connection between your running
+    instances in the VPC and the internet. IGW supports IPv4 and IPv6 addresses.
+
+  \item[Network Address Translation (NAT)] \hfill \\
+    NAT component has its place in public subnet of the VPC to enable instances in the private subnet
+    to initiate outbound traffic to the internet but deny inbound traffic initiated by external
+    machine on the internet. There exist NAT gateway and NAT instance. Both serve same purpose but differ
+    by features and how they are handled. Just to note, NAT gateway is managed service by AWS whereas
+    NAT instance is managed entirely by entity using it.
+
+  \item[Elastic Compute Cloud (EC2)] \hfill \\
+    EC2 is most widely used, highly available compute capacity of AWS delivered through its own web
+    service. Its the first service of AWS that changed the economics of rental computer hardware by
+    allowing customers to pay only for what they used and how long they used.
+
+  \item[{Relational Database Service (RDS)] \hfill \\
+      RDS is a managed RDMS service offered by AWS. It is also called database-as-a-Service(DaaS), mainly
+      because the cost of hardware provisioning, maintenance, scaling, backups, and patching is taken
+      care by external vendor, in this case, the AWS increasing productivity of users with no special
+      expertise.
+
+  \item[{Elastic Cache] \hfill \\
+      Elastic-cache is a in-memory service offered by AWS. Its a managed instance of redis or memcached
+      in-memory data stores. Cache is used for improving performance of data intensive applications.
+      AWS abstracts away the underpinnings of achieving highly-available, fault tolerant caching mechanism.
+
+
+  \item[{MongoDB] \hfill \\
+      MongoDB is a variant of NoSQL Database. It is a document oriented database. Documents reside in
+      collections. It has schemaless structure which makes it suitable for storing unstructured data.
+      It is also built with a purpose to easily achieve horizontal scalability.
+\end{description}
+
 
 \pagebreak
 
 \subsection{AWS Cloudformation}
-According to aws documentation \cite{docker}, cloudformation(CF) is a service which lets you model and set up
-aws resources so that you spend less time managing resources and focus more on application logic that runs
-on those resources. Basically, in a template you describe all resources that make your architecture. You
+According to aws documentation \cite{docker}, cloudformation(CF) is a service which lets you model and set up aws resources so that you spend less time managing resources and focus more on application logic that runs on those resources. Basically, in a template you describe all resources that make your architecture. You
 dont need to individually create and configure aws resources and figure what what's dependent on what.
 \\
 \\
@@ -50,6 +89,8 @@ Some of the big concepts in CF are \textit{Templates}, \textit{Stacks}, and \tex
 \pagebreak
 
 \subsection{AWS Monthly Calculator}
+This is a tool allowing customers to estimate monthly charges against their use of AWS services. This helps
+organizations identify areas where it can cut cost and plan according to their budget.
 
 \pagebreak
 \section{Docker Containers}\label{dockerintro}

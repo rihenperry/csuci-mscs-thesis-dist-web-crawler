@@ -34,19 +34,33 @@ IP address each time a fetch request is made to the same web server. This can be
 lookup pair for each web host in the frontier. According to Mercator designers, another difficulty is the lookup implementation itself of DNS entries is blocking; meaning that at a time only one request is considered and completed and all other requests queue up. The solution for this is yet again a multi-threaded approach
 or a asynchronous I/O wrapper.
 
-\subsection{Handling De-duplication}\index{Handling De-duplication}
+\subsection{Handling De-duplication}
 Any professional or sophisticated crawler has the capability to minimize De-duplication. De-duplication
 simply tests whether a web page with the same content has already been seen at another URL. As per
 figure \ref{fig:basicarch}, the content seen subsystem takes care of the same. There exist three
 established methods to solve this problem. 
 
-\begin{enumerate}
-  \item Document fingerprinting (checksums)
-  \item Bloom Filters
-  \item Shingles
-\end{enumerate}
-
-(\textit{this will be expanded further})
+\begin{description}
+\item[Document Fingerprinting(checksums)] \hfill \\
+  A digital fingerprint uniquely identifies a file by mapping large data inside a file to a shorter
+  string. This method is straight forward way to control data duplication. Widely deployed fingerprinting
+  functions are one-way cryptographic hash functions such as \textit{MD5}, \textit{SHA}, and
+  \textit{bcrypt}.However, this simplistic approach fails to detect near duplicates which is much needed
+  for tools like crawlers\\ 
+\item[Bloom Filter] \hfill \\
+  This is a data structure which gives a probability of same document being already present in the data
+  store. One downside is sometimes it also gives false positives, meaning, the filter outputs saying
+  `the document already exist but in fact it doesn't`. This can be used for avoiding near duplicates but
+  at the cost of missing unseen files due to false positives. This can be tackled by some application
+  strategy.
+\item[Shingling] \hfill \\
+  In many cases, the contents of one web page is similar to other differing only by few keywords, for
+  example - the published date and time. This technique does textual analytics to detect near duplicates.
+  Shingles\cite{dedupe} improve over \underline{bag of words} technique because it ignores the context of
+  words. Shingling overlaps phrases of neighboring few words at a time much like shingles on a roof.
+  \underline{Minhash} and \underline{Simhashing} are best known non-trival implementations for
+  near-duplicate detection.
+\end{description}
 
 \pagebreak
 

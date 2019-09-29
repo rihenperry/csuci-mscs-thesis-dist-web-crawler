@@ -1,7 +1,39 @@
 %chapter experiment results
 \chapter{Experiment Results \& Justification}
-This section depends on lessons learned and any observations made in section
-\ref{implwhirlpool}. Yet to be completed
+This section is based on lessons learned and any observations made in section \ref{implwhirlpool}.
+
+\section{RabbitMQ Dashboard}
+
+\pagebreak
+
+\section{Fetcher: Response times for a sample of N requests to 3 different seed servers}
+
+\pagebreak
+
+\section{Content SeenTest: Near Duplicate Detection with Simhashing}\label{handle_dedupe}
+display table of simhashing and similarity with jaccard similarity
+\\
+\\
+In Summary, when it comes to detecting similarity between two web pages, the pages are converted into
+bag of phrases. The challenge lies in storage requirements because the word size for a phrase $p$ adds
+a space complexity of O$(np)$, where $n$ is no. of times we have to save the document. Applying a hash
+function outputs a integer and is able to improve space complexity of bag of phrases to O$(n)$.
+Minhash\cite{dedupe} brings storage requirement to O$(1)$ but time complexity of query documents is
+O$(n)$. Simhashing\cite{dedupe} performs better than Minhash by querying on a fix $q$ sorted list of
+hashes. Its time complexity is given as O$(q * log(n))$. Efficient Querying and Insertion of simhashes
+calls for project implementation of its own.
+
+\pagebreak
+
+\section{MongoDB documents}
+
+\pagebreak
+
+\section{Postgres ContentSeen \& DUE Fingerprints}
+
+\pagebreak
 
 \section{Whirlpool as a Microserivce Application}
 To be completed
+
+\pagebreak
