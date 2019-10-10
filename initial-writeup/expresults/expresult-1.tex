@@ -25,6 +25,29 @@ calls for project implementation of its own.
 
 \pagebreak
 
+\section{Hash based distribution}
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=12cm,height=5cm,keepaspectratio]{../media/crawler/addingnode.png}
+  \caption{adding new node to existing cluster of nodes}
+  \label{fig:addingnode}
+\end{figure}
+
+\noindent
+Key observation while rebalancing a cluster when adding or removing a node like $pn_5$:
+\begin{itemize}
+  \item entire vnodes are moved between pnodes
+  \item number of vnodes present do not change 
+  \item assignment of hash of urls to vnodes do not change
+  \item only the assignment of vnodes to pnodes is changed
+\end{itemize}
+
+\noindent
+The maximum number of pnodes that can be provisioned to manage scalability is equal to total number of
+vnodes. At some point if the crawler process changes its property from being just a topical crawler to
+also be comprehensive, its compute capacity can get overhauled, thus requiring more horizontal scalability.
+Determining how many machines the crawler can outgrow to depends on what needs to be accomplished with the crawler.
+
 \section{MongoDB documents}
 
 \pagebreak
