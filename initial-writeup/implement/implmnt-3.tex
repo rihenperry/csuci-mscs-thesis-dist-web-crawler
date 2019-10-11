@@ -79,8 +79,11 @@ that several $vn$ are assigned to $pn$. For e.g a cluster of 3 pnodes has 12 vno
 
 \noindent
 Once vnodes have positions on the line, pnodes are finally placed on the line with hash function quite different from that used for respective vnodes. Figure \ref{fig:vnodesplit2} shows 4 physical nodes, each running
-a instance of rabbitMQ with crawler subsystems bound to them. This works differently from previous modulo N strategy. When a request comes in and its hash(44000) falls somewhere near to $vn_3$ whose hash value is 46000, it is consumed by pnode $pn_1$ whose is at hash value 60000. Similarly, a hash value of 10 is near to $vn_9$ is served by $pn_4$. When a new pnode is added to the existing cluster, depending on the criteria for load distribution, fewer vnodes from every pnode $pn$ in the cluster get reassigned to newly added pnode and
-url is consumed by first pnode available on the line, from left to right. The same thing happens in reverse when node is being removed from the cluster.
+an instance of rabbitMQ with crawler subsystems bound to them. This works differently from previous modulo N strategy. When a request comes in and its hash(44000) falls somewhere near to $vn_3$ who's hash value is 46000, it is consumed by pnode $pn_1$ at hash value 60000. Similarly, a hash value of 10 is near to $vn_9$ is served by $pn_4$. When a new pnode is added to the existing cluster, fewer vnodes from every pnode
+$pn_i$ in the cluster get reassigned to newly added pnode and url is consumed by first pnode available on
+the line, from left to right. The same thing happens in reverse when node is being removed from the cluster.
+The criteria for load distribution can be, more powerful pnodes can take greater share of the load meaning
+assigning more vnodes $vn$ for that particular pnodes $pn$.
 
 \begin{figure}[h!]
   \centering
@@ -91,12 +94,27 @@ url is consumed by first pnode available on the line, from left to right. The sa
 
 \pagebreak
 
+\noindent
+In order for crawler subsystems to know whether a current url is for itself or other pnodes in the cluster
+(pnodes are actually crawler subsystems), even when pnodes are rebalanced and assignment of vnodes to
+pnodes change, there exist a service discovery tool which keeps up-to-date information on ip address
+and port number of pnodes in cluster and can thereby direct url request to the right pnode. The host
+splitter makes the routing decision and learns about changes in the assignment of vnodes to pnodes. It
+does so through zookeeper\cite{zookeeper} which is a coordination service for keeping metadata about
+pnodes cluster.
+
 \begin{figure}[h!]
   \centering
   \includegraphics[width=8cm,height=5cm,keepaspectratio]{../media/crawler/zookeeper.png}
   \caption{zookeeper used to maintain up-to-date information on which vnodes are assigned to pnodes}
   \label{fig:zookeeper}
 \end{figure}
+
+\noindent
+Each pnode $pn$ when available, registers itself with zookeeper. The zookeeper table in figure
+\ref{fig:zookeeper_info} maintains mapping between vnodes $vn$ to pnodes $pn$. Host splitter subscribes
+to zookeeper server. When a pnode is added or removed and vnodes are reassigned, zookeeper notifies host
+splitter component.
 
 \begin{figure}[h!]
   \centering
