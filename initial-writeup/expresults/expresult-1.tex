@@ -6,12 +6,12 @@ This section is based on lessons learned and any observations made in section \r
 
 \pagebreak
 
-\section{Fetcher: Response times for a sample of N requests to 3 different seed servers}
+%\section{Fetcher: Response times for a sample of N requests to 3 different seed servers}
 
-\pagebreak
+%\pagebreak
 
-\section{Content SeenTest: Near Duplicate Detection with Simhashing}\label{handle_dedupe}
-display table of simhashing and similarity with jaccard similarity
+\section{Content SeenTest: Near Duplicate Detection}\label{handle_dedupe}
+explain LSH
 \\
 \\
 In Summary, when it comes to detecting similarity between two web pages, the pages are converted into
@@ -49,12 +49,17 @@ also be comprehensive, its compute capacity can get overhauled, thus requiring m
 Determining how many machines the crawler can outgrow to depends on what needs to be accomplished with the crawler.
 
 \section{MongoDB documents}
-
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=12cm,height=18cm,keepaspectratio]{../media/crawler/collecteddata.png}
+  \caption{screenshot of collected data through crawler}
+  \label{fig:mongo_data}
+\end{figure}
 \pagebreak
 
-\section{Postgres ContentSeen \& DUE Fingerprints}
+%\section{Postgres ContentSeen \& DUE Fingerprints}
 
-\pagebreak
+%\pagebreak
 
 \section{Whirlpool as a Microserivce Application}
 To be completed
