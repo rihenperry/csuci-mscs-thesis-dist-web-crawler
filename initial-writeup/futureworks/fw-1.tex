@@ -6,13 +6,21 @@ them superficial side notes.
 
 \begin{description}
   %\item[Experimenting with Distributed Data] \hfill \\
-  \item[Data Indexing using ElasticSearch Engine] \hfill \\
-
-  \item[Adding comprehensive coverage using ML techniques] \hfill \\
-    Discovering new relevant websites by adding Comprehensive Coverage using ML techniques
-  \item[Web Scrapping] \hfill \\
-    \cite{contentExtract}
+  \item[crawler data \& log events search using Elasticsearch Engine] \hfill \\
+    Traditionally elasticsearch is being used to power sophisticated search functionality on web
+    applications. This can be a fun and educational project using elasticsearch to search for log
+    events in crawler subsystems as well as get analytics on collected data in MongoDB. The educational
+    part here is learning to model, index, search, and analyze data efficiently.
+  \item[Adding comprehensive coverage] \hfill \\
+    Currently this project only performs crawling within the bounds of finite seed set. Being able to
+    discovering new relevant websites similar to input seeds can make it comprehensive.
+  \item[Content Extraction] \hfill \\
+    While this thesis focuses on extracting structured HTML that appears multiple times on similar pages,
+    a more sophisticated way to extract is through machine learning that can extract unstructured html
+    \cite{contentExtract} appearing only once.
   \item[Categorizing Jobs using Supervised/RNN classifier] \hfill \\
+    Producing higher dimensional data through feature extraction on collected data to build job
+    classifier.
   \item[SeenTest: Inserting and Querying Simhashes] \hfill \\
     To work on a performant solution to build the data store to query simhashes efficiently and achieve
     running time complexity of O$(q * log(n))$ mentioned in section \ref{handle_dedupe}. To implement
