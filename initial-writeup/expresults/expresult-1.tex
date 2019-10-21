@@ -2,18 +2,33 @@
 \chapter{Experiment Results \& Justification}
 This section is based on lessons learned and any observations made in section \ref{implwhirlpool}.
 
+\section{HTTP Fetch URL}
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=18cm,height=12cm,keepaspectratio]{../media/crawler/dns_response_time.png}
+  \caption{HTTP request latencies for a sample of N request across seeds}
+  \label{fig:dnsresponse}
+\end{figure}
+
+\noindent
+The HTTP fetcher subsystem is responsible for downloading the HTML page for a given absolute URL. Figure
+\ref{fig:dnsresponse} present a grouped bar chart combining HTTP requests with DNS lookup entries cached
+and non-cached. Each bar is a HTTP call to the web host and height of the bar is the time taken to respond 
+back to a corresponding request. The graphs shows median response time for cached and non-cached DNS
+lookups. It also shows response time for 75th and 95th percentiles for cached DNS lookups. Overall,
+comparing both the medians, HTTP request with cached DNS entries performed faster by approx. 250ms compared to non-cached requests. There are far fewer cached requests exceeding the 95th percentile compared to
+plain requests.
+\pagebreak
+
 \section{RabbitMQ Dashboard}
 
 \pagebreak
-
-%\section{Fetcher: Response times for a sample of N requests to 3 different seed servers}
-
-%\pagebreak
 
 \section{Content SeenTest: Near Duplicate Detection}\label{handle_dedupe}
 explain LSH
 \\
 \\
+\noindent
 In Summary, when it comes to detecting similarity between two web pages, the pages are converted into
 bag of phrases. The challenge lies in storage requirements because the word size for a phrase $p$ adds
 a space complexity of O$(np)$, where $n$ is no. of times we have to save the document. Applying a hash
