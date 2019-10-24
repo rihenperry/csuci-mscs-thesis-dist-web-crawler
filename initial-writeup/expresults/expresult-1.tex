@@ -21,6 +21,107 @@ plain requests.
 \pagebreak
 
 \section{RabbitMQ Dashboard}
+Following statistics are derived using the management plugin available to monitor and handle active
+rabbitmq node. 
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=16cm,height=10cm,keepaspectratio]{../media/crawler/rmq_queued_messages.png}
+  \caption{Queued messages}
+  \label{fig:qmsg}
+\end{figure}
+
+\noindent
+The line graph in figure \ref{fig:qmsg} shows 5,236 messages are ready to be delivered across various
+consumers connected to this rabbitmq instance with 213 messages are yet to be acknowledged by consumers
+itself as messages are manually acknowledged through custom logic between consumer to consumer processes.
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=16cm,height=12cm,keepaspectratio]{../media/crawler/rmq_msg_rates.png}
+  \caption{Message Rates}
+  \label{fig:msgrates}
+\end{figure}
+
+\noindent
+Figure \ref{fig:msgrates} measures various operations/sec occurring on the work queues for the given rabbitmq instance. Publish is the rate at which messages enter the work queue. Message Delivery with manual
+acknowledgement is the rate at which messages are delivered to the consumer(s). Publisher confirms is the
+rate at which rabbitmq is confirming messages published by the producer. Since the consumer carries out
+the processing of the message compared to the producer, the consumer rate is slower by 200 ms to that of
+producer.
+
+\pagebreak
+
+\noindent
+Figure \ref{fig:rmqnode} shows total number of connections open on that instance.
+Every connection consumes memory mainly the connections TCP buffer. The number of open client connections and rate at which connection open/close aid in determining issues common in messaging systems like connection leaks and high connection churn.
+These issues eventually lead to exhausting resources in which it wont accept new
+client connections from that point onward. With this, memory consumption and socket count turns red. 
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=16cm,height=10cm,keepaspectratio]{../media/crawler/rmq_node.png}
+  \caption{RMQ node}
+  \label{fig:rmqnode}
+\end{figure}
+
+\noindent
+Connection leaks can be learned from the following chart from rabbitmq management
+dashboard under file and socket descriptors where number of connections keep growing. For this project, figure \ref{fig:process_stats} shows stable sockets on the node.
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=14cm,height=18cm,keepaspectratio]{../media/crawler/process_stats.png}
+  \caption{File and Socket descriptors}
+  \label{fig:process_stats}
+\end{figure}
+
+\pagebreak
+
+\noindent
+Below are long-lived connections to the rabbitmq node using language specific client
+library used by the subsystem of the crawler. The client are using plain authentication to connect to virtual host(vhost) of the RMQ node. The connection churn rate
+is observed only during the crawler bootup indicating the clients use long-lived
+connections, figure \ref{fig:churn_stats}.
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=16cm,height=10cm,keepaspectratio]{../media/crawler/rmq_connections.png}
+  \caption{RMQ Connections}
+  \label{fig:rmqconn}
+\end{figure}
+
+\begin{figure*}[h!]
+    \centering
+    \begin{subfigure}
+        \centering
+        \includegraphics[width=3in, height=1.2in]{../media/crawler/churn_stats_conn.png}
+    \end{subfigure}%
+    ~ 
+    \begin{subfigure}
+        \centering
+        \includegraphics[width=3in, height=1.2in]{../media/crawler/churn_stats_channel.png}
+    \end{subfigure}
+    \caption{churn rate}
+    \label{fig:churn_stats}
+\end{figure*}
+
+\noindent
+Channels in message queues are lightweight connections sharing a single TCP connection. The channels only exist in context of a connection. A consumer using threads/processes to process messages maintains new channel per thread or a process. The channels are never shared between them. Figure \ref{fig:rmqchannel} shows single digit
+channels opened by each whirlpool subsystem. Figure \ref{fig:rmqnode} on previous
+page shows total count of channels for the given RMQ instance.
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=16cm,height=8cm,keepaspectratio]{../media/crawler/rmq_channels.png}
+  \caption{RMQ Channels}
+  \label{fig:rmqchannel}
+\end{figure}
+
+\noindent
+Channels also face similar bottlenecks discussed about RMQ connections when metrics
+on opening/closing of channels appear to be unusual. The churn rate for the channels
+in this project is very low and in fact negligible and that is only due to long-lived connections.
 
 \pagebreak
 
@@ -63,6 +164,8 @@ vnodes. At some point if the crawler process changes its property from being jus
 also be comprehensive, its compute capacity can get overhauled, thus requiring more horizontal scalability.
 Determining how many machines the crawler can outgrow to depends on what needs to be accomplished with the crawler.
 
+\pagebreak
+
 \section{MongoDB documents}
 \begin{figure}[h!]
   \centering
@@ -74,7 +177,7 @@ Determining how many machines the crawler can outgrow to depends on what needs t
 
 %\section{Postgres ContentSeen \& DUE Fingerprints}
 
-%\pagebreak
+\pagebreak
 
 \section{Whirlpool as a Microserivce Application}
 To be completed
