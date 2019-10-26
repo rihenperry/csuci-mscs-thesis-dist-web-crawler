@@ -188,7 +188,41 @@ dimensionality of the data needs to be expanded to cater to data mining and mach
 
 \pagebreak
 
-\section{Whirlpool as a Microserivce Application}
-To be completed
+\section{Whirlpool as a Microservice Architecture}
+\emph{microservices.io} defines microservices as a 
+\begin{quote}
+  "architectural style that structures an application as a collection of services that
+  are:
+  \begin{itemize}
+    \item Highly maintainable and testable
+    \item Loosely coupled
+    \item Independently deployable
+    \item Organized around business capabilities
+    \item Owned by a small team
+  \end{itemize}
+  "
+\end{quote}
+The Whirlpool crawler project in this thesis shares similar characteristics. Its implementation is a
+event-driven microservice identified by the use of asynchronous, broker-based messaging for collaboration
+between services(subsystems).
+\\
+\\
+There exist 2 ways to communicate between microservices:
+\begin{itemize}
+\item \underline{Synchronous} - where each service calls directly other service and awaits reply.
+  This is achieved using REST or gRPC. Note that this results in dependency between the two. 
+\item \underline{Asynchronous} - a message queue is used as a separate layer to send message from
+  service A to service B. Principles of message queue(covered in section \ref{eventdriven} apply here)
+  where service A doesn't wait for the reply.
+\end{itemize}
+
+With message broker
+\begin{itemize}
+\item the messages get delivered with at least once durability
+\item ensures the workflow cycle completes when participants are temporarily unavailable
+\item ordered delivery
+\item mechanism for scaling consumers
+\item easier to diversify language runtimes
+\end{itemize}
 
 \pagebreak
