@@ -1,6 +1,7 @@
 % Implementation chapter continued
-\section{Internals}\label{internals}
-\subsection{RabbitMQ as a Central Message Bus}\index{RabbitMQ as a Central Message Bus}
+\section{RabbitMQ as a Central Message Bus}\label{internals}
+RabbitMQ is a sophisticated version of messaging queue and its application in this thesis makes the
+project unique. Each block(subsystem) of mercator design consists of one or more pair of consumer and producer inside RabbitMQ that subscribes and publishes events, shown in figure \ref{fig:rmq}.
 \begin{figure}[h!]
   \centering
   \includegraphics[width=20cm,height=15cm,keepaspectratio]{../media/crawler/rmq-broker.png}
@@ -9,10 +10,31 @@
 \end{figure}
 
 \noindent
-The initial rabbitmq configuration is shown in the \url{https://github.com/rihbyne/whirlpool-rmq/blob/master/setup.j}. The subsystems only need to know the exchange points and submit message payload to it. The exchange points take care of routing payload to its recipient queue. The payload is static, and doesn't contain any business logic, this leaves the subsystems highly decoupled from each other.
+Direct worker queue is one of the three well known message routing methods used to communicate with the
+queues. In this case, the consumer on one end has to know the name of the queue while the producer has to know the exchange name only and not the queue to deliver event message to the right consumer subscribed to it.
+RabbitMQ's internal routing decouples (also promotes open/close principle) producer from consumer, both physically and logically. This manifestation reminds us of service-oriented architecture style(SOA). Each
+pair is a autonomous service, fairly generic, focusing on one particular problem, wired together to build complex chain of producers and consumers thus completing the crawler design.
+\\
+\\
+\noindent
+RabbitMQ is used to decides which blocks of the mercator should communicate with each other and how the
+messages should flow through the queues. The Queues are logically grouped into two different virtual
+host(vhost) - the frontier vhost and the subsystems vhost. The idea behind vhost in RabbitMQ is similar
+to vhost in apache, however, the difference is vhost in RabbitMQ are created using HTTP APIs whereas
+in apache they are specified in conf file. Each block authenticates to its designated vhost which has
+appropriate resource permissions preset. The queues for URL frontier solely lives in frontier vhost
+whereas the fetcher, parser, seentest, filter, and the due queues reside in subsystems vhost, see figure
+\ref{fig:rmq}. Interconnection between the vhost exist at the vhost generic consumer-producer processes.
+\\
+\\
+\noindent
+Consumer threads using Frontier queues use the pull model because consumer pulls messages from the queue.
+On the other hand, push model is used for consumers under subsystems vhost. It is model in which the
+consumer runs constantly in an infinite loop, getting a persistent connection to the message broker.
+
 \pagebreak
 
-\subsection{Shared Services with Docker}\index{Shared Services with Docker}
+\section{Shared Services with Docker}
 \begin{figure}[h!]
   \centering
   \includegraphics[width=18cm,height=10cm,keepaspectratio]{../media/crawler/multi-container-deploy.png}
@@ -20,9 +42,10 @@ The initial rabbitmq configuration is shown in the \url{https://github.com/rihby
   \label{fig:multicontainer}
 \end{figure}
 
+This is the production state of whirlpool containers that will be deployed in the AWS cloud.  
 \pagebreak
 
-\subsection{Developing code with Docker}\label{devdocker}
+\section{Developing code with Docker}\label{devdocker}
 At the foundation of any dockerized program, \texttt{dockerfile} is a place to package source code. The biggest advantage of using containerization as discussed in section \ref{dockerintro}, is to get same program behavior under development and production environments, making deployment process easier. At first, a developer will use \texttt{dockerfile} for developmental use. This approach, however, is time-consuming, slows speedy development as docker engine takes a while to build \& re-run on every change. Whats even worse is that the size of development image gets bigger on each build as dependencies are added/removed, updates to the base images are installed. This actions aren't required when developing code. 
 \\
 \\
@@ -102,7 +125,7 @@ This command clubs 3 commands - packages code for running on production machine,
 
 \pagebreak
 
-\subsection{Policy of assigning priorities \& picking queues}
+\section{Policy of assigning priorities \& picking queues}
 \begin{figure}[h!]
   \centering
   \includegraphics[width=15cm,height=12cm,keepaspectratio]{../media/crawler/docparsers.png}

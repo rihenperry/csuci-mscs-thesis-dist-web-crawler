@@ -1,4 +1,4 @@
-\subsection{SeenTest - Deduplication}
+\section{SeenTest - Deduplication}
 The content seentest is important subsystem in crawler implementation. Its function is to filter out
 copies of documents which are similar and already present in the data store. The problem is addressed
 with employing techniques like fingerprinting, shingling, or bloom filters.
@@ -34,7 +34,7 @@ Shingling combined with hashing saves disk space per document and thats exactly 
 \pagebreak
 
 \noindent
-A bruteforce implementation of pairwise comparison of simhashes has a run time complexity of $O(n^2)$.
+A bruteforce implementation of pairwise comparison of simhashes has a run time complexity of $O(n)$.
 Having a dense index such as primary key on attribute \texttt{id} or \texttt{page\_fp} along with
 spare index also known as secondary index on attribute \texttt{domain} can speed lookup and decrease disk seeks. The dense index is aware of byte location pointing to blocks, trackers and sectors, whereas, the secondary index inturn points to primary index. This solution only goes so far. A more sustainable improvement
 is proposed in next chapter.
@@ -70,8 +70,8 @@ documents compared. The hashes highlighed in red get dropped for $\geq T$. Simil
 
 \pagebreak
 
-\subsection{URL Frontier}
-\subsubsection{Prioritizer Policy}
-\subsubsection{Front Queue Biased Selection Policy}
+\section{URL Frontier}
+\subsection{Prioritizer Policy}
+\subsection{Front Queue Biased Selection Policy}
 
 \pagebreak

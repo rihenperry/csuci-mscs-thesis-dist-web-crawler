@@ -1,18 +1,21 @@
 % Implementation/Contributions of Whirlpool
 \chapter{Implementating Whirlpool}\label{implwhirlpool}
-\section{Mission}\label{mission}
-\begin{figure}[h!]
-  \centering
-  \includegraphics[width=8cm,height=10cm,keepaspectratio]{../media/crawler/whirlpool-seed-set.png}
-  \caption{Topical crawling seed set}
-  \label{fig:seedset}
-\end{figure}
-\section{Characteristics}
-\begin{figure}[h!]
-  \centering
-  \includegraphics[width=12cm,height=8cm,keepaspectratio]{../media/crawler/whirlpool-crawl-order.png}
-  \caption{Crawl order policy of Whirlpool}
-  \label{fig:whrlplcrawlorder}
-\end{figure}
+\begin{figure*}[h!]
+    \centering
+    \begin{subfigure}
+        %\centering
+        \includegraphics[width=3in, height=2.0in]{../media/crawler/whirlpool-crawl-order.png}
+    \end{subfigure}
+    ~
+    \begin{subfigure}
+        %\centering
+        \includegraphics[width=3in, height=2.0in]{../media/crawler/whirlpool-seed-set.png}
+    \end{subfigure}%
+    \caption{Whirlpool seed set \& its crawl ordering policy}
+    \label{fig:missionchar}
+\end{figure*}
+
+\noindent
+Whirlpool is a continuous, topical crawler(section \ref{covfresh}) that never terminates by itself, figure \ref{fig:missionchar}. The focus is to maximize freshness over coverage of content crawled from given seeds. The seeds are active job portals which serve as a perfect candidates to continuously monitor and revisit already visited pages. This is done without overhauling the seed servers by implementating the url frontier scheme (section \ref{scheme}).
 
 \pagebreak
