@@ -17,7 +17,7 @@ pair is a autonomous service, fairly generic, focusing on one particular problem
 \\
 \\
 \noindent
-RabbitMQ is used to decides which blocks of the mercator should communicate with each other and how the
+RabbitMQ is used to decide which blocks of the mercator should communicate with each other and how the
 messages should flow through the queues. The Queues are logically grouped into two different virtual
 host(vhost) - the frontier vhost and the subsystems vhost. The idea behind vhost in RabbitMQ is similar
 to vhost in apache, however, the difference is vhost in RabbitMQ are created using HTTP APIs whereas
@@ -42,7 +42,31 @@ consumer runs constantly in an infinite loop, getting a persistent connection to
   \label{fig:multicontainer}
 \end{figure}
 
-This is the production state of whirlpool containers that will be deployed in the AWS cloud.  
+\noindent
+This is the production and development state of whirlpool containers that is deployed in the AWS cloud.
+Afterall, this is a whole point of using containerization. All it takes is a orchestration file that
+reads production level configuration when deploying on AWS. One exception here in figure
+\ref{fig:multicontainer} is that in production environment, postgresql database is a AWS RDS instance and
+during local development postgresql is self contained docker container. A clear distinction is made to
+distinguish service running directly on provisioned machine or in a container. Each solid box is a
+separate machine and dashed box is a container on that machine.
+\\
+\\
+\noindent
+The state of mongodb, postgres is separated from the state of each crawler node and shared with each
+running instance of crawler. The state of RabbitMQ is local to machine its running on. This becomes a
+stateless, shared nothing architecture. Each message flowing through the queue is independent of the other.
+Load sharing among other running instance of crawler is not based on hostname but instead uses
+consistent hashing, see section \ref{distcrawl} to understand the benefits of it. 
+\\
+\\
+\noindent
+The fetch subsystem has the job to visit the html page and the result of it can have many different
+outcomes. Blocking messages in queue until the current url is complete can leave the consumer stranded and
+messages piling up in the fetch queue. Depending on the language runtime used, fetch's consumer script
+should either be multi-threaded or process urls in asynchronous fashion. The later approach is adopted
+using nodejs. Handling of politeness and coordinating priority of urls to crawl is a multi-threaded jar
+executable written in java.
 \pagebreak
 
 \section{Developing code with Docker}\label{devdocker}
@@ -132,6 +156,19 @@ This command clubs 3 commands - packages code for running on production machine,
   \caption{Whirlpool Parser subsystem using Dependency Injection}
   \label{fig:htmlparser}
 \end{figure}
+
+\noindent
+Figure \ref{fig:htmlparser} is a class diagram for parser subsystem. Its uses the Dependency Injection
+design pattern discussed in background chapter, section \ref{softdesign}. DiceParser, IndeedParser, etc are
+concrete implementations of HTMLParser class. Each represents a parser for set of seeds shown in figure
+\ref{fig:missionchar}. Each of which is a knowledgeable to understand given page relevance followed by assigning single digit numeric weight to extracted urls from the given page. The URLs flow through various message queues until it lands in frontier queues where they are organized into different priority levels. 
+\\
+\\
+\noindent
+The Document class is highly decoupled from those array of concrete classes. During runtime, the
+concrete classes are loaded by the dependency inject. Upon receiving message from the queue, it invokes
+\textit{isMatch}, \textit{extractLinks} on one of those concrete classes based on the metadata in the
+message.
 
 \pagebreak
 
