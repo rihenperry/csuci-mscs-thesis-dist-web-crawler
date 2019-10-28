@@ -71,7 +71,16 @@ documents compared. The hashes highlighed in red get dropped for $\geq T$. Simil
 \pagebreak
 
 \section{URL Frontier}
-\subsection{Prioritizer Policy}
-\subsection{Front Queue Biased Selection Policy}
+The URL Frontier scheme in whirlpool operates in a same way as it does for mercator crawler, discussed
+in background section \ref{scheme}.
+
+\begin{itemize}
+\item \underline{Prioritizer Policy}: A continuous URL is assigned a average priority of 3-4 whereas a
+  non-continuous URL is assigned a priority of 1-2. In whirlpool, a URL is considered continuous if
+  the page is revised giving rise to the discovery of new URLs.
+\item \underline{Front Queue Biased Selection Policy}: The bias selector is a randomize queue strategy
+  on how the items get pulled out of the $F$ Front queues and enter the $B$ back queues. The trick is
+  to pull items from higher priority queue more frequently compared to mid and low priority queues.
+\end{itemize}
 
 \pagebreak

@@ -167,7 +167,7 @@ concrete implementations of HTMLParser class. Each represents a parser for set o
 \noindent
 The Document class is highly decoupled from those array of concrete classes. During runtime, the
 concrete classes are loaded by the dependency inject. Upon receiving message from the queue, it invokes
-\textit{isMatch}, \textit{extractLinks} on one of those concrete classes based on the metadata in the
+\textit{isMatch()}, \textit{extractLinks()} on one of those concrete classes based on the metadata in the
 message.
 
 \pagebreak
