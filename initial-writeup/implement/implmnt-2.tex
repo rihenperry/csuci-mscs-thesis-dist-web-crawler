@@ -10,7 +10,7 @@ project unique. Each block(subsystem) of mercator design consists of one or more
 \end{figure}
 
 \noindent
-Direct worker queue is one of the three well known message routing methods used to communicate with the
+Direct worker queue\cite{asyncmsg} is one of the three well known message routing methods used to communicate with the
 queues. In this case, the consumer on one end has to know the name of the queue while the producer has to know the exchange name only and not the queue to deliver event message to the right consumer subscribed to it.
 RabbitMQ's internal routing decouples (also promotes open/close principle) producer from consumer, both physically and logically. This manifestation reminds us of service-oriented architecture style(SOA). Each
 pair is a autonomous service, fairly generic, focusing on one particular problem, wired together to build complex chain of producers and consumers thus completing the crawler design.

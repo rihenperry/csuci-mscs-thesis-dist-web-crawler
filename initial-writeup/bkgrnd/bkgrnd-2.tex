@@ -25,15 +25,15 @@ pages are capable of dynamically changing content and popularity of Single Page 
 enabled rendering data through view logic controlled by javascript.
 \\
 \\
-As shown in the figure \ref{fig:crawlorder}, \textit{Comprehensive Crawling} focuses on maximizing coverage by reaching out to content of all types.
+As shown in the figure \ref{fig:crawlorder}, \textit{Comprehensive Crawling}\cite{trends} focuses on maximizing coverage by reaching out to content of all types.
 A particular page $p$ is weighted important by counting external links outside current site's perimeter. Crawl order policies like Breath-first Search, PageRank, and other variations are applied. Such activity
 is carried out by Commericial Search Engines.
 \\
 \\
-On the other hand, \textit{Scoped Crawling} narrows its
+On the other hand, \textit{Scoped Crawling}\cite{trends} narrows its
 crawling activity to certain portion of the web i.e only crawl a specific category (e.g everything about Stock Market). The crawling order is determined based on a degree to which a page $p$ falls under its umbrella.
 In constrast to Comprehensive, Scoped crawler is suitable for data-mining task by performing
-data collection on topic of interest.\textit{Topical Crawling} is a form of Scoped Crawling in which page relevance is determined by - given a  page $p$ links to another page $p`$ and is in-scope(within bounds) either directly or through a series of subsequent links. There are 3 techniques to order URLs to crawl.
+data collection on topic of interest.\textit{Topical Crawling}\cite{trends} is a form of Scoped Crawling in which page relevance is determined by - given a  page $p$ links to another page $p`$ and is in-scope(within bounds) either directly or through a series of subsequent links. There are 3 techniques to order URLs to crawl.
 
 \begin{enumerate}
 \item Fish Search (Binary classificaiton). Here, the relevance is measured by treating links within visited
@@ -51,7 +51,7 @@ coverage which in turn means it won't discover new pages in its journey. A decay
 allow irrelevant fetches with an ultimate intention of finding relevant page of interest.
 \\
 \\
-Finally, freshness is the attribute that makes the design of crawler being either continuous or non-continuous. The question of balancing content coverage and freshness in a crawler is solely a decision of entity behind it. A \textit{batch crawling} design requires restarting of a crawler at periodic interval to download revised content of previously crawled pages. A \textit{continuous} or \textit{incremental crawling} design
+Finally, freshness is the attribute that makes the design of crawler being either continuous or non-continuous. The question of balancing content coverage and freshness in a crawler is solely a decision of entity behind it. A \textit{batch crawling}\cite{trends} design requires restarting of a crawler at periodic interval to download revised content of previously crawled pages. A \textit{continuous} or \textit{incremental crawling}\cite{trends} design
 would be technically a program that never terminates to revisit previously crawled pages.
 
 

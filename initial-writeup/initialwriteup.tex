@@ -54,12 +54,19 @@
 
 %\include{timeline}
 
-\include{resources}
+%\include{resources}
+\include{whirlpool}
+
 \newpage
 
+\renewcommand{\bibname}{References}
+\addcontentsline{toc}{chapter}{References}
+%\printbibliography
+
 \nocite{*}
-\bibliographystyle{unsrt}
-\bibliography{references}\index{References}
+\bibliographystyle{acm}
+\bibliography{whirlpool}\index{References}
+
 \end{document}
 %%% Local Variables:
 %%% mode: latex

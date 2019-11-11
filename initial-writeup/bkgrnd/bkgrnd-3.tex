@@ -21,17 +21,17 @@ The blueprint design is discussed in much detail in section \ref{blueprint} as i
 crawler designed for this thesis.
 \\
 \\
-The \textbf{Polygot} web crawler also had distributed design. It had crawler manager handling
+The \textbf{Polybot}\cite{polybot} web crawler also had distributed design. It had crawler manager handling
 multiple downloading process. It ran on 4 machines for 18 days and crawled over 120 million pages.
 \\
 \\
-\textbf{IBM Webfountain} crawler was distributed, featured multi-threaded crawling process called 'ants'.
+\textbf{IBM Webfountain}\cite{ibm} crawler was distributed, featured multi-threaded crawling process called 'ants'.
 It was polite and can be configured to change politeness policies on fly. Re-downloading of pages a.k.a
 freshness was based on historical change rate of pages. Webfountain was written in C++ \& used Messaging
 Passing Interface(MPI) to allow collaboration between processes. It was deployed on 48 nodes.
 \\
 \\
-\textbf{Ubicrawler} \cite{ubicrawler}, 2004, was yet another scalable distributed web crawler. It employed
+\textbf{Ubicrawler}\cite{ubicrawler}, 2004, was yet another scalable distributed web crawler. It employed
 consistent hashing algorithm to cope up with addition/removal of nodes designated for carrying out crawling
 task. The consistent hashing is explained in detailed in chapter \ref{implwhirlpool} section
 \ref{distcrawl}. By using this technique it demonstrated graceful performance degradation in the event of

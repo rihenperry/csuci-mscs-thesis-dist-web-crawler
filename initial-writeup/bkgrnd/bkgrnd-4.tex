@@ -58,14 +58,13 @@ established methods to solve this problem.
   example - the published date and time. This technique does textual analytics to detect near duplicates.
   Shingles\cite{dedupe} improve over \underline{bag of words} technique because it ignores the context of
   words. Shingling overlaps phrases of neighboring few words at a time much like shingles on a roof.
-  \underline{Minhash} and \underline{Simhashing} are best known non-trival implementations for
-  near-duplicate detection.
+  \underline{Minhash}\cite{dedupe} and \underline{Simhashing}\cite{simhash} are best known non-trival implementations for near-duplicate detection.
 \end{description}
 
 \pagebreak
 
 \subsection{URL Filtering}\label{urlfilter}
-The URL Filter component takes input a batch of extracted URLs, applies a series of tests, modifiers on each URL, composes a newer batch of URL which fall in its
+The URL Filter\cite{mercator} component takes input a batch of extracted URLs, applies a series of tests, modifiers on each URL, composes a newer batch of URL which fall in its
 criteria and forwards it to the next subsystem. For instance, assume a set of links $\{U_1,U_2,U_3,U_4,...,U_i\}$ extracted from page $p$, there is a possibility that some $U$'s link are relative to the page $p$, in
 such cases, this component normalizes such $U$'s turning them into absolute URLs. Also, the crawler can
 enforce a rule to exclude out of bound URls - those that don't fall within a given list of domains. 
@@ -88,7 +87,7 @@ high locality that many of the extracted links fall within the domain, it is eff
 It should be noted that it is always safer and courteous to include a note in request header of the crawler indicating intentions to download the data, and also provide your email address where the webmaster can contact you in case of any issues. Also, it is a good practice to enforce strict compliance with domain's robots.txt rules.
 
 \subsection{Duplicate URL Eliminator (DUE)}\index{Duplicate URL Eliminator(DUE)}
-A batch of URLs qualified from URL filtering subsystem arrives at DUE. Sometimes it s also referred to URL-seen test. DUE guards the URL Frontier by eliminating
+A batch of URLs qualified from URL filtering subsystem arrives at DUE\cite{mercator}. Sometimes it s also referred to URL-seen test. DUE guards the URL Frontier by eliminating
 multiple instances of the same URL from adding to the Frontier. It also keeps history of set of URLs that were previously added to the URL Frontier and those that are
 currently in it. The fire-and-forget, one-time crawl URLs are only crawled once. In
 continuous crawling Frontier scheme, some URLs are revisited periodically for new information, in such cases, the DUE has to delete its traces from its state.
@@ -109,7 +108,7 @@ access locality on the URL set.
 \pagebreak
 
 \subsection{URL Frontier}\label{scheme}
-The URL Frontier subsystem receives a batch of URLs from its counterpart(it is either DUE or hostsplitter in case of Distributed crawling). It maintains those URLs in the Frontier and propagates them in some order whenever the fetch module seeks a URL from it.
+The URL Frontier\cite{mercator} subsystem receives a batch of URLs from its counterpart(it is either DUE or hostsplitter in case of Distributed crawling). It maintains those URLs in the Frontier and propagates them in some order whenever the fetch module seeks a URL from it.
 
 \begin{figure}[h!]
   \centering
@@ -131,9 +130,9 @@ the frontier. As mentioned earlier, simple priority queue fails as there is high
 to its own site, creating a burst of accesses to that site.
 
 \begin{itemize}
-\item \textbf{Explicit politeness:} obeys any specifications from webmaster on what portions of the site
+\item \textbf{Explicit politeness:}\cite{trends} obeys any specifications from webmaster on what portions of the site
   site can be crawled, see section \ref{urlfilter} for more details.
-\item \textbf{Implicit politeness:} Avoids hitting any site too often even though no specification exist
+\item \textbf{Implicit politeness:}\cite{trends} Avoids hitting any site too often even though no specification exist
   on the site.
   \item \textbf{Freshness:} crawl some pages more often that others.
 \end{itemize}
@@ -243,7 +242,7 @@ single web server on the web or in the seed set, taking the URls for those serve
 server address \textit{usjobs.com} could get hashed to an integer 2. So all those URLs that are being stored by that web server will be parsed by node $M_2$ while the other two nodes do not fetch documents located on \textit{usjobs.com}.
 \\
 \\
-The key to the implementation is the host splitting component shown in figure \ref{fig:hpart}. The component at machine $M_1$ computes which machine is meant to crawl
+The key to the implementation is the host splitting\cite{mercator} component shown in figure \ref{fig:hpart}. The component at machine $M_1$ computes which machine is meant to crawl
 the URLs of \textit{usjobs.com}. It takes the URL, looks at its server's address and
 hash it to the integer 2 upon which it knows $M_2$ is supposed to crawl URLs located
 on this server and therefore sends it to node $M_2$. Looking at the snapshot of node $M_2$, it has passed content seen, URL filter tests which confirms the incoming URL

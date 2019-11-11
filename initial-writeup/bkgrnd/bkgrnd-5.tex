@@ -7,8 +7,7 @@ build scalable software. The design patterns are abstract and universally applie
 \subsection{Open-Close Principle}
 When a certain code is designed with an intent to extend it but does not need any modification
 whenever requirements change or when new use-case is requested, such code is said obeying open-close
-principle. In other words, it is open for extension and closed modificaiton. This design process gives
-more flexibility to the program and make future changes cheaper.
+principle\cite{ocdi}. In other words, it is open for extension and closed modificaiton. This design process gives more flexibility to the program and make future changes cheaper.
 
 \begin{figure}[h!]
   \centering
@@ -53,7 +52,7 @@ whereas static, class based language such as java, DI is achieved using DI frame
 \pagebreak
 
 \subsection{Dependency Inversion}
-Dependency Injection is subclass of broader principle called Dependency Inversion. Its aim is same as
+Dependency Injection is subclass of broader principle called Dependency Inversion\cite{ocdi}. Its aim is same as
 DI - to make the class as simple and less coupled to the rest of the system. Inversion concept is observed
 in MVC frameworks. Its promotes the philosophy of coding to contract. Contract being the creator of plugins
 and not worrying who will use them; the inversion figures out which class to instantiate. It can load
@@ -61,8 +60,7 @@ dependencies on a scale of 100.
 \\
 \\
 \noindent
-Inversion is identified as `Hollywood Principle` - Don't call us, we will call you. Features found in a
-piece of software supporting DI framework include:
+Robert Martin's analogy on Inversion pattern\{ocdi} is ``Hollywood Principle - Don't call us, we will call you''. Features found in a piece of software supporting DI framework include:
 \begin{itemize}
   \item expands code only through plugin/extensions
   \item plugins are independent and can be added or removed any point of time.
@@ -81,13 +79,13 @@ systems. Each one has different advantages and different cost.
 \\
 \\
 \begin{itemize}
-\item \textbf{Adding identical copies of components}: This is easy and most common scaling strategy
+\item \textbf{Adding identical copies of components}\cite{scalaberules}: This is easy and most common scaling strategy
   applied to application build from scratch. Identical copies of components or server equally serve
   incoming request. A client request to any one of random cluster of clones yields correct results.
   This scaling strategy is not restricted only to client-server applications but also applicable to
   autonomous program like web crawlers. Mercator crawler described in this report uses exact copies
   of crawler onto individual machines and distributes traffic through its host splitter component.
-\item \textbf{Functional partitioning}: Identifying parts of the system focused on specific functionality
+\item \textbf{Functional partitioning}\cite{scalaberules}: Identifying parts of the system focused on specific functionality
   and creating independent subsystems out of them.
   \begin{figure}[h!]
     \centering
@@ -99,7 +97,7 @@ Figure \ref{fig:netflix} shows how a netflix streaming service is divided into t
 the video processor and the content streamer. This brings a lot of benefits but also increasing
 engineering challenges. The main benefits are both service operate independently, parallel teams work
 on independent codebases. Each service scales independently of other.
-\item \textbf{Data partitioning}: Refers to maintaining subset of data onto each machine and controlling
+\item \textbf{Data partitioning}:\cite{scalaberules} Refers to maintaining subset of data onto each machine and controlling
   its state independent of other machines. This is the application of shared-nothing principle. With no
   data sharing, there is no data synchronization, no need for locking on global data store, and so
   failures can be isolated because nodes are not dependent on each other. A simplistic approach of data
@@ -113,11 +111,8 @@ on independent codebases. Each service scales independently of other.
 \pagebreak
 
 \subsection{Managing State}\label{managestate}
-Managing state is often overlooked aspect when addressing the scaling problem of the application. If not done properly, it can create barriers to scale the application well. In a program environment where identical copies are used to perform some
-computation, nodes using its own local/in-memory to cache objects are extremely
-difficult/tricky to coordinate cache invalidation. In such cases, it is best to
-maintain a global shared cache store so there is only one copy of each object and
-easier to invalidate.
+Managing state is often overlooked aspect when addressing the scaling problem of the application. If not done properly, it can create barriers to scale the application well. Author Bill Wilder in chapter 2 of his
+book\cite{manstate} reminds that in a program environment where identical copies are used to perform some computation, nodes using its own local/in-memory to cache objects are extremely difficult/tricky to coordinate cache invalidation. In such cases, it is best to maintain a global shared cache store so there is only one copy of each object and easier to invalidate.
 \begin{figure}[h!]
   \centering
   \includegraphics[width=10cm,height=8cm,keepaspectratio]{../media/crawler/multi-cache-wrng.png}
