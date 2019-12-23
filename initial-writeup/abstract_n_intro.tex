@@ -1,11 +1,11 @@
 \chapter{Introduction}
 A \textit{web crawler} is a long running program that collects pages from the web and stores them to the
-disk either in raw format or after extracting its contents. Sometimes they are also referred as
+disk either in raw format or after extracting contents. Sometimes they are also referred as
 \textit{random walker}, \textit{worm}, \textit{spiders}, \textit{robot}. Crawlers serve variety of
 purposes. Web search engines are very well-known systems powered internally through crawlers.
 Other uses are web data mining for performing analytics, archiving portions of the web - a
 relevant active project is the Wayback Machine from The Internet Archive\cite{netarchive} operating since 2000. Most recently,
-there is an ongoing attempt from Software Heritage\cite{swheritage} that continuously crawl \& archive publicly available source code repositories on the web.
+there is an ongoing attempt from Software Heritage\cite{swheritage} continuously crawl \& archive publicly available source code repositories on the web.
 \\
 \\
 This thesis is an attempt to implement a small-scale, special purpose crawler for collecting data about
@@ -16,29 +16,29 @@ is concerned, the work done here does not dive into cleaning \& analyzing the da
 
 \section{Contributions}
 \begin{itemize}
-  \item \textbf{Use of Message Broker:} In one case, the papers doesn't provides information on how the subsystems that make up a crawler are connected together. This thesis makes use of message broker to facilitate collaboration between components thus providing asynchronous, event-driven style of communication. It also highlights its strengths \& weakness.
-   \item \textbf{Crawl Ordering Problem:} A more crucial issue is without having a target to crawl, the problem of crawling becomes endless, infinite crawling even for specialized crawler such as this. This thesis discusses the crawl ordering strategy to shape its crawling only to specific content.
-   \item \textbf{Distributing the crawl:} Furthermore, this thesis shows the shortcomings of linear hashing used for partitioning hosts to distribute the crawl and instead employs consistent hashing\cite{consisthash} algorithm and discuss its merits over it.
-    \item \textbf{Development strategy:}  Given this complex program at hand, it becomes obvious to separate the concerns by developing each component in isolated pieces. This thesis leverages docker containers to build the project in stages. It allows to split the development and production environment by building images for the target platform to run the component.
-    \item \textbf{AWS Services:} For running the crawler activity, this thesis makes the most of AWS 12-month free tier access by combining together suite of services and sketches an infrastructure to setup, deploy and demonstrate the program.
-    \item \textbf{Microservices:} Lastly, this thesis explains the philosophy, principles behind microservices \cite{microservices} by relating it to work done in this thesis.
+  \item \textbf{Use of Message Broker:} In one case, the papers \cite{mercator} \cite{multicrawler} \cite{ubicrawler} \cite{irlbot} don't provide information on how the subsystems that make up a crawler are connected together. This thesis makes use of message broker to facilitate collaboration between components thus providing asynchronous, event-driven style of communication and also highlights its strengths \& weakness.
+   \item \textbf{Crawl Ordering Problem:} Defines the scope of crawling activity without which the problem of crawling becomes endless, infinite crawling.
+   \item \textbf{Distributing the crawl:} Furthermore, this thesis shows the shortcomings of linear hashing used for partitioning hosts to distribute the crawl and instead employs a consistent hashing\cite{consisthash} algorithm and discuss its merits over it.
+    \item \textbf{Development strategy:}  Given this complex program at hand, it becomes obvious to separate the concerns by developing each component in isolated pieces. This thesis leverages docker containers to build the project in stages. It allows one to split the development and production environment by building images for the target platform to run the component.
+    \item \textbf{AWS Services:} For running the crawler activity, this thesis combines together off the shelf tools and sketches an infrastructure to setup, deploy and demonstrate the program.
+    \item \textbf{Microservices:} Lastly, this thesis explains the philosophy and principles behind microservices \cite{microservices} by relating it to work done in this thesis.
 \end{itemize}
 
 \pagebreak
 
 \section{Motivation(the big ideas)}
-A long term goal of this project is to built the infrastructure to run basic data science algorithms on the collected data and to tune the program characteristics to balance coverage \& freshness(refer section \ref{covfresh}). A web crawler has its place at the very bottom of the pyramid(figure \ref{fig:datahierarchy} doing instrumentation and logging.
+A long term goal of this project is to build the infrastructure to run basic data science algorithms on the collected data and to tune the program characteristics to balance coverage \& freshness. A web crawler has its place at the very bottom of the pyramid figure \ref{fig:datahierarchy} doing instrumentation and logging.
 
 \begin{figure}[h!]
   \centering
   \includegraphics[width=14cm,height=12cm,keepaspectratio]{../media/crawler/data_hierarchy.png}
-  \caption{\underline{Source}: Monica Rogati's "The AI hierarchy of Needs"\cite{datasci}}
+  \caption{Solid foundation for your data before being effective with AI \& machine learning. \underline{Source}: Monica Rogati's "The AI hierarchy of Needs"\cite{datasci}}
   \label{fig:datahierarchy}
 \end{figure}
 
 \noindent
 Data science is used to build data products, optimize business activity, and also to gain insights into
-consumer behavior. Lot of companies are eager to adopt it but all these things can be achieved correctly
+consumer behavior. Lots of companies are eager to adopt it but all these things can only be achieved correctly
 by building the layers of foundational work first.
 \\
 \\
@@ -57,27 +57,25 @@ around the operation of distributed systems, stream processing, and handling com
 \pagebreak
 
 \noindent
-A web crawler can be seen as a fancy project and its complexity can easily be overlooked.
+A web crawler can be seen as a very attractive project and its complexity can easily be overlooked.
 Given the apparent simplicity of basic crawling algorithm, it posses numerous challenges. First of all,
 crawling the whole web is simply unrealistic even for the world's most advanced crawlers. Considering the
 current scale of web and while its still evolving, it is important to think thoroughly about
-characteristics of a crawler, because this brings control in the hands of developers, it enriches the
-value of problem they are trying to solve, it gives them a choice to either seek broad coverage over fresh
-content or maintain a balance between the two. Even a small scale version of a crawler can be built to
+characteristics of a crawler. A choice to either seek broad coverage over fresh content or maintain a balance between the two. Even a small scale version of a crawler can be built to
 be sophisticated and scalable. Moreover, building a crawler sets a playground to address problems such
 as concurrency, throughput, and load balancing. It is a program quite different from traditional,
 client-server paradigm that can fanout from single source file to modular, independent services that interact with each other through endpoints. 
 \\
 \\
-When discussing a system like crawler, people often critic saying that
+When discussing a system like a crawler, people often critic saying that
 \\
 \\
-``Stop worrying about scale. You're not Google/Amazon. Just use a relational database.''
+``Stop worrying about scale. You're not Google/Amazon. Just use a relational database.'' - Critics
 \\
 \\
 Well, that is true; building for scale without enough evidence from the metrics such as logging, locks you into an inflexible design. It is also a form
 of premature optimization. Along the same lines, there is also an urge felt to overengineer and loose
-focus on simplicity. Engineers loves to solve puzzles and challenge of building complex software. Overengineering is basically building a solution that is much more complex than is really necessary. This occurs when developer at a job tries to predict every possible use case and every edge case, eventually losing focus on the most common use cases.  
+focus on simplicity. Engineers loves to solve puzzles and the challenge of building complex software. Overengineering is basically building a solution that is much more complex than is really necessary. This occurs when developer at a job tries to predict every possible use case and every edge case, eventually losing focus on the most common use cases.  
 \\
 \\
 However, the author of this thesis believes that it important to survey different technologies as each have

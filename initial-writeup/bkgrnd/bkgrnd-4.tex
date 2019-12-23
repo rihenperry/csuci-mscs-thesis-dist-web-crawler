@@ -1,16 +1,16 @@
 % background chapter continued
 \section{Mercator Architecture}\label{blueprint}
-This section proceeds into detailed description of Mercator\cite{mercator} web crawler surveyed in section \ref{relatedworks}. Figure \ref{fig:basicarch} is a high-level composition of the same. As seen, Mercator specializes different steps defined in basic crawling
+This section proceeds into a detailed description of Mercator\cite{mercator} web crawler surveyed in section \ref{relatedworks}. Figure \ref{fig:basicarch} is a high-level composition of the same. As seen, Mercator specializes different steps defined in the basic crawling
 algorithm covered in section \ref{basicalgo} and adds several other steps to address
-the social and scalability challenges of web crawler. Its blueprint design offers
-horizontal scalability and therefore if implemented can run on more than one node.
+the social and scalability challenges of a web crawler. Its blueprint design offers
+distributed load sharing and therefore if implemented can run on more than one node.
 Each part that contributes to mercator crawler can also be referred to as a
 component, module, subsystem, etc. They can be used interchangeably from this point onward.
 
 \begin{figure}[h!]
   \centering
   \includegraphics[width=16cm,height=14cm,keepaspectratio]{../media/crawler/basic-crawler-architecture-v2.png}
-  \caption{High-level organization of Mercator}
+  \caption{High-level organization of Mercator \cite{mercator}}
   \label{fig:basicarch}
 \end{figure}
 
@@ -21,17 +21,16 @@ goes through the cycle of being fetched followed by passing through various chec
 filters and eliminations, then finally returned to the Frontier (for incremental crawling).
 \\
 \\
-At the beginning of each logical loop cycle, a worker thread pops a URL from the Frontier data structure adhering to the priority and politeness policy. The output URL is then fetched by HTTP fetcher subsystem - which like any other web client contacts DNS module to get IP address of the corresponding web server. The web page is then retrieved and stored at a temporary location which is then picked up by parser subsystem which forwards the path to the page and extracted links to content seen and URL filter, respectively. The batch of URLs undergo a fixed set of pre-processing steps at the URL filter subsystem before being passed over to Duplicate URL eliminator (DUE). The DUE module tests each URL to determine whether the link should be added to the
-URL frontier.
+At the beginning of each logical loop cycle, a worker thread pops a URL from the Frontier data structure adhering to the priority and politeness policy. The output URL is then fetched by HTTP fetcher subsystem - which like any other web client contacts DNS module to get IP address of the corresponding web server. The web page is then retrieved and stored at a temporary location which is then picked up by parser subsystem which forwards the path to the page and extracted links to content seen and URL filter, respectively. The batch of URLs undergoes a fixed set of pre-processing steps at the URL filter subsystem before being passed over to Duplicate URL eliminator (DUE). The DUE module tests each URL to determine whether the link should be added to the URL frontier. It maintains a historical database of checksums corresponding to the URLs.
 
 \pagebreak
 
 \subsection{Fetcher, Parser, and DNS}\index{Fetcher, Parser, and DNS}
 It occurred to designers of Mercator that the task of fetching each URL from seed set or newly discovered
-links is complex. First, the request made to the web server at a given URL endpoint will have several outcomes as a response. Therefore, it becomes a bottleneck to implemented fetcher as only single threaded, blocking synchronous module. Instead it should be written as a multi-threaded, synchronous I/O or non-block,
+links is complex. First, the request made to the web server at a given URL endpoint will have several outcomes as a response. Therefore, it becomes a bottleneck to the implemented fetcher as only single threaded, blocking synchronous module. Instead it should be written as a multi-threaded, synchronous I/O or non-block,
 asychronous I/O to speedup the operation. Moreover, it is also inefficient to have DNS resolve a given URL's
 IP address each time a fetch request is made to the same web server. This can be fixed by having a cache of
-lookup pair for each web host in the frontier. According to Mercator designers, another difficulty is the lookup implementation itself of DNS entries is blocking; meaning that at a time only one request is considered and completed and all other requests queue up. The solution for this is yet again a multi-threaded approach
+lookup pair for each web host in the frontier. According to Mercator designers, another difficulty is that the lookup implementation itself of DNS entries is blocking; meaning that at a time only one request is considered and completed and all other requests queue up. The solution for this is yet again a multi-threaded approach
 or a asynchronous I/O wrapper.
 
 \subsection{Handling De-duplication}
@@ -45,20 +44,20 @@ established methods to solve this problem.
   A digital fingerprint uniquely identifies a file by mapping large data inside a file to a shorter
   string. This method is straight forward way to control data duplication. Widely deployed fingerprinting
   functions are one-way cryptographic hash functions such as \textit{MD5}, \textit{SHA}, and
-  \textit{bcrypt}.However, this simplistic approach fails to detect near duplicates which is much needed
+  \textit{bcrypt}. However, this simplistic approach fails to detect near duplicates which is much needed
   for tools like crawlers\\ 
 \item[Bloom Filter] \hfill \\
   This is a data structure which gives a probability of same document being already present in the data
   store. One downside is sometimes it also gives false positives, meaning, the filter outputs saying
   `the document already exist but in fact it doesn't`. This can be used for avoiding near duplicates but
-  at the cost of missing unseen files due to false positives. This can be tackled by some application
+  at the cost of missing unseen files due to false positives. This can be tackled by resizing the bit vector to uniformly distributed the hashes.
   strategy.
 \item[Shingling] \hfill \\
   In many cases, the contents of one web page is similar to other differing only by few keywords, for
   example - the published date and time. This technique does textual analytics to detect near duplicates.
-  Shingles\cite{dedupe} improve over \underline{bag of words} technique because it ignores the context of
+  Shingles\cite{dedupe} improve over bag of words technique because it ignores the context of
   words. Shingling overlaps phrases of neighboring few words at a time much like shingles on a roof.
-  \underline{Minhash}\cite{dedupe} and \underline{Simhashing}\cite{simhash} are best known non-trival implementations for near-duplicate detection.
+  Minhash \cite{dedupe} and Simhashing \cite{simhash} are best known non-trival implementations for near-duplicate detection.
 \end{description}
 
 \pagebreak
@@ -113,7 +112,7 @@ The URL Frontier\cite{mercator} subsystem receives a batch of URLs from its coun
 \begin{figure}[h!]
   \centering
   \includegraphics[width=12cm,height=15cm,keepaspectratio]{../media/crawler/url-frontier.png}
-  \caption{URL Frontier Scheme(based on Mercator)}
+  \caption{URL Frontier Scheme(based on Mercator) \cite{mercator}}
   \label{fig:frontier}
 \end{figure}
 
@@ -174,7 +173,7 @@ Each front queue $F_m$ in range $\{1,2,3...m\}$  and back queue $B_n$ in range $
 \begin{figure}[h!]
   \centering
   \includegraphics[width=14cm,height=12cm,keepaspectratio]{../media/crawler/f-queue.png}
-  \caption{Frontier Front Queue}
+  \caption{Frontier Front Queue \cite{mercator}}
   \label{fig:fqueue}
 \end{figure}
 
@@ -203,7 +202,7 @@ Again, there are $B$ back queues from $\{1,2,3,...n\}$, so when the URLs are pul
 \begin{figure}[h!]
   \centering
   \includegraphics[width=15cm,height=13cm,keepaspectratio]{../media/crawler/b-queue.png}
-  \caption{Frontier Back Queue}
+  \caption{Frontier Back Queue \cite{mercator}}
   \label{fig:bqueue}
 \end{figure}
 
@@ -231,7 +230,7 @@ A crawler program as a whole can be distributed for various reasons. A distribut
 \begin{figure}[h!]
   \centering
   \includegraphics[width=15cm,height=9cm,keepaspectratio]{../media/crawler/host-splitterv3.png}
-  \caption{Host Partitioning}
+  \caption{Host Partitioning \cite{mercator}}
   \label{fig:hpart}
 \end{figure}
 

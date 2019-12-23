@@ -1,39 +1,34 @@
 % background chapter continued
 \section{Related Works}\label{relatedworks}
 Web crawling is well studied topic, several crawlers emerged and vanished, some designs weren't open while
-some were not documented. This section briefly talks about history of web crawlers that have existed and have made notable design decisions each passing year.
+some were not documented. This section briefly talks about history of web crawlers that have existed. 
 \\
 \\
-\textbf{Wanderer} was the first crawler that was written in Perl in 1993. It ran on a single machine. It was used for collecting statistics and later used to power first search engine. 
+\textbf{Wanderer} \cite{blocks} was the first crawler that was written in Perl in 1993. It ran on a single machine. It was used for collecting statistics and later used to power first search engine. 
 \\
 \\
-\textbf{MOMSpider} came into existence in 1994. It rate-limited requests to the web servers by introducing
-\textit{Robot Exclusion Policy}. It allowed crawler operator to exclude sites. No focus on scalability. It
-used DBMS to store URL's and state of crawls.
+\textbf{MOMSpider} \cite{blocks} came into existence in 1994. It rate-limited requests to the web servers by introducing \textit{Robot Exclusion Policy}. It allowed crawler operator to exclude sites, no focus on scalability, used DBMS to store URL's and state of crawls.
 \\
 \\
-\textbf{Internet Archive} \cite{netarchive} crawler addresses the challenges of growing web. It was designed to crawl 100 million URL's. Used disk-based queue to store URL's to-be crawled. Made use of bloom-filter to determine whether a page was previously crawled and if so, that page was not visited again. It also addressed politeness concerns and optimized \textit{robots.txt} lookups. Apache Hendrix is a open-source out-of-box
-crawler used by the Internet Archive project entirely written in Java.
+\textbf{Internet Archive} \cite{netarchive} crawler addresses the challenges of growing web. It was designed to crawl 100 million URL's. Used disk-based queue to store URL's to-be crawled, made use of bloom-filter to determine whether a page was previously crawled and if so, that page was not visited again. It also addressed politeness concerns and optimized \textit{Robot Exclusion Policy} lookups. Apache Hendrix is a open-source out-of-box crawler used by the Internet Archive project entirely written in Java.
 \\
 \\
-\textbf{Mercator} \cite{mercator} came out in 1999. The paper discusses the blueprint design of its crawler. Initially it was non-distributed. It addressed social aspects of crawling through its frontier scheme. The announcement of 2nd paper incorporated host splitting component that made the crawler execution model distributed. It was extensively used in web mining projects. It ran on 4 machines for 17-days crawling over 891 billion pages. The program was designed with extensibility in mind and implemented fully in Java.
+\textbf{Mercator} \cite{mercator} came out in 1999. The paper discusses the blueprint design of its crawler. Initially it was non-distributed. It addressed social aspects of crawling through its frontier scheme. The announcement of a 2nd paper incorporated a host splitting component that made the crawler execution model distributed. It was extensively used in web mining projects. It ran on 4 machines for 17-days crawling over 891 billion pages. The program was designed with extensibility in mind and implemented fully in Java.
 The blueprint design is discussed in much detail in section \ref{blueprint} as it forms the basis of
 crawler designed for this thesis.
 \\
 \\
-The \textbf{Polybot}\cite{polybot} web crawler also had distributed design. It had crawler manager handling
-multiple downloading process. It ran on 4 machines for 18 days and crawled over 120 million pages.
+The \textbf{Polybot}\cite{polybot} web crawler also had a distributed design. It had a crawler manager handling multiple downloading process. It ran on 4 machines for 18 days and crawled over 120 million pages.
 \\
 \\
 \textbf{IBM Webfountain}\cite{ibm} crawler was distributed, featured multi-threaded crawling process called 'ants'.
-It was polite and can be configured to change politeness policies on fly. Re-downloading of pages a.k.a
+It was polite and can be configured to change politeness policies on the fly. Re-downloading of pages a.k.a
 freshness was based on historical change rate of pages. Webfountain was written in C++ \& used Messaging
 Passing Interface(MPI) to allow collaboration between processes. It was deployed on 48 nodes.
 \\
 \\
 \textbf{Ubicrawler}\cite{ubicrawler}, 2004, was yet another scalable distributed web crawler. It employed
-consistent hashing algorithm to cope up with addition/removal of nodes designated for carrying out crawling
-task. The consistent hashing is explained in detailed in chapter \ref{implwhirlpool} section
+a consistent hashing algorithm to cope up with the addition/removal of nodes designated for carrying out crawling task. The consistent hashing is explained in detailed in chapter \ref{implwhirlpool} section
 \ref{distcrawl}. By using this technique it demonstrated graceful performance degradation in the event of
 failure. It was deployed on 5 nodes and downloaded 10 million pages a day. This program was written
 entirely in Java.
@@ -47,7 +42,7 @@ detecting, transforming multiple formats of semantic web data.
 \\
 \textbf{IRLbot} \cite{irlbot}, 2009, is the most recent comprehensive crawler studied and implemented for
 over 3 years. It discusses its own implementation to address the increasing complexity of verifying unique
-URLs accumulated over time. Most notably it provides a solution to mitigate spider traps created by web sites. IRLbot was able to successfully crawled 6.3 valid HTML pages in a single day.
+URLs accumulated over time. Most notably it provides a solution to mitigate spider traps created by web sites. IRLbot was able to successfully crawled 6.3 billion valid HTML pages on a single machine.
 \\
 \\
 Apart from this, there exist open source web crawlers written in various languages notable ones are Apache Nutch(Java), Scrappy(Python).

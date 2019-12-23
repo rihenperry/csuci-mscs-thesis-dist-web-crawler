@@ -18,7 +18,7 @@ factors.
 \end{figure}
 
 \noindent
-\textbf{Coverage:} Focus is on fetching pages that crawler deems required. 
+\textbf{Coverage:} Focus is on fetching pages that the crawler deems required. 
 \\
 \textbf{Freshness:} Here the focus is on revisting, redownloading already visited pages. Since web 2.0,
 pages are capable of dynamically changing content and popularity of Single Page Applications(SPA) has
@@ -32,20 +32,19 @@ is carried out by Commericial Search Engines.
 \\
 On the other hand, \textit{Scoped Crawling}\cite{trends} narrows its
 crawling activity to certain portion of the web i.e only crawl a specific category (e.g everything about Stock Market). The crawling order is determined based on a degree to which a page $p$ falls under its umbrella.
-In constrast to Comprehensive, Scoped crawler is suitable for data-mining task by performing
-data collection on topic of interest.\textit{Topical Crawling}\cite{trends} is a form of Scoped Crawling in which page relevance is determined by - given a  page $p$ links to another page $p`$ and is in-scope(within bounds) either directly or through a series of subsequent links. There are 3 techniques to order URLs to crawl.
+In constrast to Comprehensive, a Scoped crawler is suitable for data-mining tasks by performing
+data collection on topics of interest.\textit{Topical Crawling}\cite{trends} is a form of Scoped Crawling in which page relevance is determined by - given a  page $p$ links to another page $p`$ and is in-scope(within bounds) either directly or through a series of subsequent links. There are 3 techniques to order URLs to crawl.
 
 \begin{enumerate}
-\item Fish Search (Binary classificaiton). Here, the relevance is measured by treating links within visited
-  page either relevant/irrelevant upto a certain height.
+\item Fish Search (Binary classification). Here, the relevance is measured by treating links within visited
+  page either relevant/irrelevant a certain height.
 \item The relevance is estimated by doing textual analysis on text surrounding a link in a visited page $p$
   that points to yet-to-be visited page $q$.
-\item Train and query a Machine Learning classifier to get the score of set of topics of interest to crawl.
+\item Train and query a Machine Learning classifier to get the score of a set of topics of interest to crawl.
 \end{enumerate}
 
 \noindent
-This crawler has to balance its greediness level by considering page relevance. It is possible that a
-already relevant page $p$ may not always yield a new relevant page but it might would after going through
+This crawler has to balance its greediness level by considering page relevance. It is possible that an already relevant page $p$ may not always yield a new relevant page but it might after going through
 several links of irrelevant pages. If the crawler is designed to be too greedy then it will have zero
 coverage which in turn means it won't discover new pages in its journey. A decay factor can be used to
 allow irrelevant fetches with an ultimate intention of finding relevant page of interest.

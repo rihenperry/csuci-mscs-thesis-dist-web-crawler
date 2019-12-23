@@ -1,5 +1,5 @@
 \chapter{Background}
-This chapter primarily attempts to familiarize the reader with enough groundwork related to web crawler. It
+This chapter primarily attempts to familiarize the reader with enough groundwork related to web crawlers. It
 also elaborates on the miscellaneous resources that are integrated to support the objective of this thesis.
 It begins by explaining the basic steps taken by a crawler, followed by describing key features that
 underpin its system design. Properties of a crawler are discussed in the following section. A
@@ -17,12 +17,12 @@ The basic operation of any HTTP based crawler goes like this:
   \State $U_f \gets \text{S; where } U_f \text{ is a Frontier queue}$
   \Procedure{Spider}{$U_f$}
   \While {$U_f \neq \emptyset$}
-    \State $u \gets \text{Pop}(U_f)$ 
-    \State $p \gets \text{Fetch}(u)$
-    \State $T \gets \exists p\text{ [\{Extract}(p, t) \text{ | } t \text{ is a text \}]}$
-    \State $L \gets \exists p\text{ [\{Extract}(p, l) \text{ | } l \text{ is a link \}]}$
+    \State $u \gets \text{deque}(U_f)$ 
+    \State $p \gets \text{fetch}(u)$
+    \State $T \gets \text{\{extract}(p, t) \text{ | } t \text{ is a text \}}$
+    \State $L \gets \text{\{extract}(p, l) \text{ | } l \text{ is a link \}}$
     \State $U_f \gets U_f \cup L$
-    \State $\exists u\text{ [\{Delete}(U_f, u) \text{ | } u \text{ is a already fetched URL\}]}$
+    \State $\text{delete}(U_f, u) \text{ | } u \text{ is a already fetched URL}$
   \EndWhile
 \EndProcedure
 \State \textbf{end}
@@ -48,13 +48,13 @@ following traits:
   its purpose or business and eventually there is a higher possibility of have ramifications on the
   operator running the crawler.
 \item \textbf{Resilent to spider traps a.k.a infinite loops:} Some hosts mislead crawlers into fetching page after page that
-  never reach an end. Thus, a crawler should be robust to such fallacies.
+  never reach an end. Thus, a crawler should be robust to such pitfalls.
 \item \textbf{Distributing load:} A crawler can make itself capable by distributing the load across
   multiple machines. Distributing the load across multiple machines is also a \textit{shared nothing
     architecture}. It can make the crawler download web pages based on geographical proximity reducing
   request-response latency.
 \item \textbf{Scaling:} Scaling and Distributed may sound similar but subtle difference is a scalable
-  crawler's sole purpose is to cop up with load as it comes, in this case, pacing the crawl rate as well
+  crawler's sole purpose is to cope up with load as it comes, in this case, pacing the crawl rate as well
   as enhancing the crawl rate. With scalability in mind, the architecture needs to be rethought on every
   order of magnitude of load increase.
 \item \textbf{Page quality:} A crawler should seek broad coverage by being an explorer but at the same

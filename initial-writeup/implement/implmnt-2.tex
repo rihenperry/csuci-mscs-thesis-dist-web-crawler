@@ -1,7 +1,7 @@
 % Implementation chapter continued
 \section{RabbitMQ as a Central Message Bus}\label{internals}
 RabbitMQ is a sophisticated version of messaging queue and its application in this thesis makes the
-project unique. Each block(subsystem) of mercator design consists of one or more pair of consumer and producer inside RabbitMQ that subscribes and publishes events, shown in figure \ref{fig:rmq}.
+project unique. Each block(subsystem) of whirlpool design consists of one or more pair of consumer and producer inside RabbitMQ that subscribes and publishes events, shown in figure \ref{fig:rmq}.
 \begin{figure}[h!]
   \centering
   \includegraphics[width=20cm,height=15cm,keepaspectratio]{../media/crawler/rmq-broker.png}
@@ -21,7 +21,7 @@ RabbitMQ is used to decide which blocks of the mercator should communicate with 
 messages should flow through the queues. The Queues are logically grouped into two different virtual
 host(vhost) - the frontier vhost and the subsystems vhost. The idea behind vhost in RabbitMQ is similar
 to vhost in apache, however, the difference is vhost in RabbitMQ are created using HTTP APIs whereas
-in apache they are specified in conf file. Each block authenticates to its designated vhost which has
+in apache they are specified in configuration file. Each block authenticates to its designated vhost which has
 appropriate resource permissions preset. The queues for URL frontier solely lives in frontier vhost
 whereas the fetcher, parser, seentest, filter, and the due queues reside in subsystems vhost, see figure
 \ref{fig:rmq}. Interconnection between the vhost exist at the vhost generic consumer-producer processes.
