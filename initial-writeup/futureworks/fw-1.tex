@@ -1,6 +1,10 @@
 % Futurework chapter
 \chapter{Conclusion \& Future Work}
-This chapter is a list of follow-up ideas that can be turned into potential projects. These are complex and
+Whirlpool is a multifaceted project. In one way, it builds a strategy to source data legally, politely, continuously from machines over the internet, transforms it through various checks/filters in real time and makes it available to data analyst/scientist. Thus, it is doing the actual plumbing work of data science. Secondly, the system design of web crawlers surveyed in background chapter are extensible through plugins but are developed, deployed and scaled as a one single, monolithic entity. Changes to one part of the application require redeploying the whole application. Scaling out(horizontally) require changes in application code and isn't always possible. This project takes a alternative approach to developing building blocks of whirlpool by breaking down its components into smaller, independently running components called microservices. Deploying this multi-component project is achieved with docker and kubernetes. Thus scaling whirlpool is done on per-component basis that means scaling only those components that require more resources, while leaving others at their original scale.
+\\
+\\
+\noindent
+This is a list of follow-up ideas that can be turned into potential projects. These are complex and
 important topics that deserve a report of their own. This thesis wouldn't do them justice by making
 them superficial side notes.
 
